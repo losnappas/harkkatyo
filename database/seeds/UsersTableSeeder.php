@@ -14,13 +14,20 @@ class UsersTableSeeder extends Seeder
         factory('App\User', 2)->create();
 
 		factory('App\User', 1)->create([
-				'name'=>'123',
+				'name'=>'owner',
 				'email'=>'123@123.com',
 				'password' => bcrypt('123123'),
 			]); 
 
-        //turn 123 into admin
+        factory('App\User', 1)->create([
+                'name'=>'admin',
+                'email'=>'1234@1234.com',
+                'password' => bcrypt('123123'),
+            ]);
+        $adminuser = App\User::where('name', '=', 'admin')->first();
+        //turn 123 into owner
 		App\User::find(3)->roles()->attach(App\Role::first());
+        $adminuser->attachRole(App\Role::skip(1)->first()->id);
 
     }
 }

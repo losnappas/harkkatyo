@@ -9,6 +9,11 @@
 
                 <div class="panel-body">
                     You are logged in!
+                    @role('owner')
+                    <li>
+                    <a href="/admin/user">Manage users</a>
+                    </li>
+                    @endrole
                 </div>
             </div>
         </div>

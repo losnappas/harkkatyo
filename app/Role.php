@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Zizaco\Entrust\EntrustRole;
 
-class Role extends Model
+class Role extends EntrustRole
 {
     /**
      * The attributes that are mass assignable.
@@ -12,19 +12,7 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'label'
+        'name', 'display_name', 'description'
     ];
 
-    public $timestamps = false;
-
-    public function permissions()
-    {							
-        return $this->belongsToMany(Permission::class);
-    }
-    
-
-    public function users()
-    {                           
-        return $this->belongsToMany(User::class);
-    }
 }

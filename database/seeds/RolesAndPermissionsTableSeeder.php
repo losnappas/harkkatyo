@@ -11,15 +11,17 @@ class RolesAndPermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        App\Role::create(['name'=>'admin', 'label'=>'The administrator']);
-        App\Role::create(['name'=>'teacher', 'label'=>'A teacher']);
-        App\Role::create(['name'=>'student', 'label'=>'Student']);
-        // guest? no need rly. \App\Role::create(['name'=>'guest', 'label'=>'A guest']);
+        App\Role::create(['name'=>'owner', 'display_name'=>'Project owner', 'description' => 'allows everything']);
+        App\Role::create(['name'=>'admin', 'display_name'=>'An administrator', 'description' => 'allows modifying of user related data']);
+        App\Role::create(['name'=>'teacher', 'display_name'=>'A teacher', 'description' => 'allows modifying of courses and sees some student data']);
+        App\Role::create(['name'=>'student', 'display_name'=>'A student', 'description' => 'nothing but a student']);
+        // guest? no need rly. \App\Role::create(['name'=>'guest', 'display_name'=>'A guest', 'description' => 'empty for now']);
 
-        App\Permission::create(['name'=>'can-modify-users', 'label'=>'Add/remove/modify user data']);
+        App\Permission::create(['name'=>'can-modify-users', 'display_name'=>'modify users', 'description' => 'Add/remove/modify user data']);
 
-        //attach "can-modify-users" to "admin"
-        App\Role::first()->permissions()->attach(\App\Permission::first());
+        //attach "can-modify-users" to "owner" & "admin"
+        App\Role::first()->attachPermission(App\Permission::first());
+        //App\Role::first()->permissions()->attachPermissions();
 
 /*		//attach subsequent rights "skip"
 		\App\Role::first()->permissions()->attach(\App\Permission::skip(1)->first());

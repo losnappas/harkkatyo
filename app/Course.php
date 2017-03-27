@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Zizaco\Entrust\EntrustPermission;
+use Illuminate\Database\Eloquent\Model;
 
-class Permission extends EntrustPermission
+class Course extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Permission extends EntrustPermission
      * @var array
      */
     protected $fillable = [
-        'name', 'display_name', 'description'
+        'name', 'subject'
     ];
 
 }
