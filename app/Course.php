@@ -12,7 +12,21 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'subject'
+        'body', 'title', 'subject'
     ];
 
+    public function tasks()
+    {							
+        return $this->belongsToMany(Task::class);
+    }
+
+    /**
+     * Add task to course
+     *
+     * @return task..?
+     */
+    public function addTask($body, $title, $deadline)
+    {
+    	return $this->tasks()->create(['body' => $body, 'title'=>$title, 'deadline' => $deadline]);
+    }
 }

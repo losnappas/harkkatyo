@@ -25,7 +25,9 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('123123'),
             ]);
         $adminuser = App\User::where('name', '=', 'admin')->first();
-        //turn 123 into owner
+        //turn 123 into owner & admin
+        App\User::find(3)->roles()->attach(App\Role::skip(1)->first());
+
 		App\User::find(3)->roles()->attach(App\Role::first());
         $adminuser->attachRole(App\Role::skip(1)->first()->id);
 

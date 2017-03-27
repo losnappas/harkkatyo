@@ -18,3 +18,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::resource('/courses', 'CourseController');
+
+// uhh middleware=>web is what now?
+//Route::group(['middleware' => 'web'], function(){
+//prefix admin means '/admin/user' ..me thinks
+Route::group(['prefix' => 'admin'], function(){
+	Route::resource('/user', 'UserController');
+	Route::resource('/calendar', 'CalendarController');
+});
+//});
