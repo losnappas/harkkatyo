@@ -8,10 +8,14 @@
 </p>
 
 ## How to use
-composer install
+composer install 
+
+copy .env.example to .env
+
+php artisan key:generate
+
 php artisan migrate:refresh --seed
 
-php artisan key:generate (?)
 
 ## About Laravel
 
