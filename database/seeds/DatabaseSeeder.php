@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class); //call it last to attach role
         $this->call(RolesAndPermissionsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
+        $this->call(TasksAndCoursesTableSeeder::class);
     }
 }

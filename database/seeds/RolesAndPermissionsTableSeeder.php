@@ -19,7 +19,7 @@ class RolesAndPermissionsTableSeeder extends Seeder
 
         App\Permission::create(['name'=>'can-modify-users', 'display_name'=>'modify users', 'description' => 'Add/remove/modify user data']);
 
-        //attach "can-modify-users" to "owner" & "admin"
+        //attach "can-modify-users" to "owner"
         App\Role::first()->attachPermission(App\Permission::first());
         //App\Role::first()->permissions()->attachPermissions();
 

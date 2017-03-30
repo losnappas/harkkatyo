@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCourse;
 
 class CourseController extends Controller
 {
@@ -23,7 +24,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('courses.create');
+        $tasks = \App\Task::all();
+        return view('courses.create', compact('tasks'));
     }
 
     /**
@@ -32,9 +34,10 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCourse $request)
     {
-        //
+        // add validation later
+        
     }
 
     /**
