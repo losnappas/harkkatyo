@@ -11,11 +11,11 @@ class TasksAndCoursesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory('App\Task', 2)->create();
-        factory('App\Course', 1)->create();
+        factory('App\Task', 4)->create();
+        factory('App\Course', 3)->create();
 
         //attach task1 to course 1
         //usually do this via controller.
-        App\Course::first()->tasks()->attach(App\Task::first());
+        App\Course::first()->tasks()->attach(App\Task::all());
     }
 }

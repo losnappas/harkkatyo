@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCourse;
+use App\Task;
 
 class TaskController extends Controller
 {
@@ -13,7 +15,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = Task::all();
+        return view('tasks.home', compact('tasks'));
     }
 
     /**
@@ -23,7 +26,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('tasks.create');
     }
 
     /**
@@ -32,9 +35,10 @@ class TaskController extends Controller
      * @param  \App\Http\Requests\StoreCourse  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCourse $request)
     {
-        //
+        $request->persist();
+        return redirect('/tasks')->with('status', 'Task created');
     }
 
     /**
@@ -45,7 +49,8 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
+        $task = Task::find($id);
+        return view('tasks.task', compact('task'));
     }
 
     /**

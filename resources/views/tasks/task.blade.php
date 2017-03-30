@@ -5,16 +5,11 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Course title: {{$course->title}}</div>
+                <div class="panel-heading">Task title: {{$task->title}}</div>
                 <div class="panel-body">
-                    {{$course->body}}
+                    Body: {{$task->body}}
                     <br /><br />
-                    Tasks:
-                    <ul>
-                    @foreach($course->tasks as $task)
-                        <li>{{$task->title}}</li>
-                    @endforeach
-                    </ul>
+                    Answer: {{$task->answer}}
                 </div>
             </div>
         </div>

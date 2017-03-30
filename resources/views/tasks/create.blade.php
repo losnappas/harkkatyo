@@ -7,27 +7,18 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
 
-                <div class="panel-heading">Create course</div>
+                <div class="panel-heading">Create a task</div>
                 
                 <div class="panel-body">
-                    <form action="/courses" method="post" class="pure-form">
+                    <form action="/tasks" method="post" class="pure-form">
                         {{ csrf_field() }}
-                        {{--todo: expand task--}}
-                        Add tasks for your course:
-                        @foreach ($tasks as $task)
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="tasks[]" value="{{$task->id}}"> {{$task->title}}
-                                </label>
-                            </div>
-                        @endforeach
-
                         <fieldset class="pure-group">
                             <input class="pure-input-1-2" type="text" name="title" id="title" placeholder="Title">
+                            <input class="pure-input-1-2" type="text" name="answer" id="answer" placeholder="Answer">
                             <textarea class="pure-input-1-2" name="body" id="body" cols="30" rows="10" placeholder="Description" ></textarea>
                         </fieldset>
 
-                        <button type="submit">Add Course</button>
+                        <button type="submit">Submit</button>
                     </form>
                 </div>
             </div>

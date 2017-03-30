@@ -12,7 +12,7 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'body', 'title', 'deadline'
+        'body', 'title', 'answer' // add 'answer'
     ];
 
 	public function courses()

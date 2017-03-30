@@ -29,16 +29,16 @@ $factory->define(App\Task::class, function (Faker\Generator $faker)
 	return [
 		'body' => $faker->sentence(4), 
 		'title' => $faker->unique()->word, 
-		'deadline' => $faker->dateTimeBetween('now', '+2 weeks'),
+		//'deadline' => $faker->dateTimeBetween('now', '+2 weeks'),
+		'answer' => $faker->unique()->word, 
 	];
 });
 
 $factory->define(App\Course::class, function (Faker\Generator $faker)
 {
 	return [
-		'body' => $faker->sentence(4), 
+		'body' => $faker->paragraph(3), 
 		'title' => $faker->unique()->word, 
-		'subject' => $faker->word,
 	];
 });
 

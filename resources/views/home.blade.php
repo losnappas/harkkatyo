@@ -19,6 +19,7 @@
                     
                     @endrole
                     <li><a href="/courses">Courses</a></li>
+                    <li><a href="/tasks">Tasks</a></li>
                     </ul>
                 </div>
             </div>

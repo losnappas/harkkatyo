@@ -17,10 +17,13 @@ class RolesAndPermissionsTableSeeder extends Seeder
         App\Role::create(['name'=>'student', 'display_name'=>'A student', 'description' => 'nothing but a student']);
         // guest? no need rly. \App\Role::create(['name'=>'guest', 'display_name'=>'A guest', 'description' => 'empty for now']);
 
-        App\Permission::create(['name'=>'can-modify-users', 'display_name'=>'modify users', 'description' => 'Add/remove/modify user data']);
+        App\Permission::create(['name'=>'modify-users', 'display_name'=>'modify users', 'description' => 'Add/remove/modify user data']);
 
-        //attach "can-modify-users" to "owner"
+        App\Permission::create(['name'=>'create-courses', 'display_name'=>'create courses', 'description' => 'Add/remove/modify courses']);
+
+        //attach "modify-users"&"create-courses" to "owner"
         App\Role::first()->attachPermission(App\Permission::first());
+        App\Role::first()->attachPermission(App\Permission::skip(1)->first());
         //App\Role::first()->permissions()->attachPermissions();
 
 /*		//attach subsequent rights "skip"

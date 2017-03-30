@@ -20,12 +20,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::resource('/courses', 'CourseController');
+Route::resource('/tasks', 'TaskController');
+
 
 // uhh middleware=>web is what now?
 //Route::group(['middleware' => 'web'], function(){
 //prefix admin means '/admin/user' ..me thinks
 Route::group(['prefix' => 'admin'], function(){
 	Route::resource('/user', 'UserController');
-	Route::resource('/calendar', 'CalendarController');
 });
 //});

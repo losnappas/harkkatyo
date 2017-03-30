@@ -17,7 +17,6 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('body');
             $table->string('title');
-            $table->string('subject');
             $table->timestamps();
         });
 
@@ -25,7 +24,8 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('body');
             $table->string('title');
-            $table->date('deadline');
+            $table->string('answer');
+            //$table->date('deadline');
             $table->timestamps();
         });
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCourse;
+use App\Course;
+
 
 class CourseController extends Controller
 {
@@ -14,7 +16,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return view('courses.home');
+        $courses = Course::all();
+        return view('courses.home', compact('courses'));
     }
 
     /**
@@ -31,13 +34,13 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StoreCourse  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCourse $request)
     {
-        // add validation later
-        
+        $request->persist();
+        return redirect('/courses')->with('status', 'Course created');
     }
 
     /**
@@ -48,7 +51,8 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        return view('courses.course');
+        $course = Course::find($id);
+        return view('courses.course', compact('course'));
     }
 
     /**
