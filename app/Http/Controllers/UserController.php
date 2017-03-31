@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\User;
+use Auth;
+use App\Role;
+use Entrust;
+
+
+
 
 class UserController extends Controller
 {
@@ -18,7 +25,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admins.users.home');
+        $users = User::all();
+        return view('admins.users.home', compact('users'));
     }
 
     /**
@@ -50,7 +58,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $roles = Role::all()->pluck('name');
+        var_dump($roles);
+        var_dump($user->hasRole('owner'));
+        return view('admins.users.user', compact('user', 'roles'));
     }
 
     /**

@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Entrust;
-use App\Course;
 
 class StoreCourse extends FormRequest // this is actually misnamed. . .
 {
@@ -28,6 +27,7 @@ class StoreCourse extends FormRequest // this is actually misnamed. . .
         return [
             'title' => 'required|min:3',
             'body' => 'required',
+            //add 'answer'?
         ];
     }
 
@@ -43,17 +43,23 @@ class StoreCourse extends FormRequest // this is actually misnamed. . .
         for ( $i=1; $i<count( $trace ); $i++ ) {
             if ( isset( $trace[$i] ) ) // is it set?
                  if ( $class != $trace[$i]['class'] ) // is it a different class
-                     return $trace[$i]['class'];
+                     break;//return $trace[$i]['class'];
         }
+        $class = $trace[$i]['class'];
+
+        //strip so it's \App\Class
+        $class = '\\'.preg_replace('/^|Controller$/', '', $class);
+        $class = str_replace('\\Http\\Controllers', '', $class);
+
+        return $class;
     }
 
+    //stores new courses and tasks
     public function persist()
     {
         //calls 'create' based on which class called
         //so don't use plurals in controller names (postscontroller => postcontroller)
         $class = $this->get_calling_class();
-        $class = '\\'.preg_replace('/^|Controller$/', '', $class);
-        $class = str_replace('\\Http\\Controllers', '', $class);
 
         $course = $class::create([
                 'body' => $this->body,
@@ -66,5 +72,19 @@ class StoreCourse extends FormRequest // this is actually misnamed. . .
         }
     }
 
+    //saves edits to courses/tasks
+    public function savechanges($id)
+    {
+        $class = $this->get_calling_class();
+        $thing = $class::findOrFail($id);
+
+        //if you pick no tasks it doesn't change the course's tasks
+        //bug or feature-to-be? heh
+        if (isset($this->tasks)) {
+            $thing->tasks()->sync($this->tasks);
+        }
+
+        $thing->fill($this->request->all())->save();
+    }
 
 }

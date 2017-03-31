@@ -33,9 +33,18 @@ class CreateCoursesTable extends Migration
         {
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('task_id');
+
+
+            $table->foreign('task_id')->references('id')->on('tasks')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+
+            $table->foreign('course_id')->references('id')->on('courses')
+                ->onUpdate('cascade')->onDelete('cascade');
             
             //no foreign key constraints (vs entrust_setup_tables)? interesting
-            $table->unique(['course_id', 'task_id']);
+            //changed to fk:s for cascade effects
+            $table->primary(['course_id', 'task_id']);
         });
     }
 

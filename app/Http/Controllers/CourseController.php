@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreCourse;
 use App\Course;
+use App\Task;
 
 
 class CourseController extends Controller
@@ -27,14 +27,14 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $tasks = \App\Task::all();
+        $tasks = Task::all();
         return view('courses.create', compact('tasks'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\StoreCourse  $request
+     * @param  \App\Http\StoreCourse  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCourse $request)
@@ -63,19 +63,23 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        return view('courses.edit');
+        $course = Course::find($id);
+        $tasks = Task::all();
+        //$tasks = $course->tasks()->get();
+        return view('courses.edit', compact('course', 'tasks'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\StoreCourse  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreCourse $request, $id)
     {
-        //
+        $request->savechanges($id);
+        return redirect('/courses');//->back();
     }
 
     /**

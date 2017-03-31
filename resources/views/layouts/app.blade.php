@@ -78,10 +78,12 @@
                 </div>
             </div>
         </nav>
+
+        @include('layouts.sidebar')
         <div class="container">
             <div class="row">
                 @if(session('status'))
-                        <div>{{session('status')}}</div>  
+                    <div>{{session('status')}}</div>  
                 @endif
                 @if(count($errors)>0)
                     <ul>
@@ -90,13 +92,22 @@
                     @endforeach
                     </ul>
                 @endif
+
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            @yield('title')
+                        </div>
+                        
+                        <div class="panel-body">
+                            @yield('content')
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-    
-        @yield('content')
-    </div>
 
+    </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>

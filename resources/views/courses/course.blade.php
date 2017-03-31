@@ -1,23 +1,18 @@
 @extends('layouts.app')
 
+@section('title')
+    Course title: {{$course->title}}
+@endsection
+
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Course title: {{$course->title}}</div>
-                <div class="panel-body">
-                    {{$course->body}}
-                    <br /><br />
-                    Tasks:
-                    <ul>
-                    @foreach($course->tasks as $task)
-                        <li>{{$task->title}}</li>
-                    @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+    {{$course->body}}
+    <br /><br />
+    Tasks:
+    <ul>
+        @foreach($course->tasks as $task)
+            <li>{{$task->title}}</li>
+        @endforeach
+    </ul>
+
 @endsection

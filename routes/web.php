@@ -27,6 +27,6 @@ Route::resource('/tasks', 'TaskController');
 //Route::group(['middleware' => 'web'], function(){
 //prefix admin means '/admin/user' ..me thinks
 Route::group(['prefix' => 'admin'], function(){
-	Route::resource('/user', 'UserController');
+	Route::resource('/users', 'UserController');
 });
 //});
