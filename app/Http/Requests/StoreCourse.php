@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Entrust;
 
 class StoreCourse extends FormRequest // this is actually misnamed. . .
 {
@@ -14,7 +13,8 @@ class StoreCourse extends FormRequest // this is actually misnamed. . .
      */
     public function authorize()
     {
-        return Entrust::can('create-courses');
+        // change to Gate::allows or whatever
+        return true;
     }
 
     /**
@@ -27,7 +27,7 @@ class StoreCourse extends FormRequest // this is actually misnamed. . .
         return [
             'title' => 'required|min:3',
             'body' => 'required',
-            //add 'answer'?
+            //add 'answer' => 'sometimes' later
         ];
     }
 

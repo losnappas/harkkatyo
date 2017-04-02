@@ -22,8 +22,8 @@ class RolesAndPermissionsTableSeeder extends Seeder
         App\Permission::create(['name'=>'create-courses', 'display_name'=>'create courses', 'description' => 'Add/remove/modify courses']);
 
         //attach "modify-users"&"create-courses" to "owner"
-        App\Role::first()->attachPermission(App\Permission::first());
-        App\Role::first()->attachPermission(App\Permission::skip(1)->first());
+        App\Role::first()->permissions()->attach(App\Permission::first());
+        App\Role::first()->permissions()->attach(App\Permission::skip(1)->first());
         //App\Role::first()->permissions()->attachPermissions();
 
 /*		//attach subsequent rights "skip"

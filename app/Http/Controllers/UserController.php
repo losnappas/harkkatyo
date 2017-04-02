@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\User;
+//use Illuminate\Foundation\Auth\User;
 use Auth;
+use App\User;
 use App\Role;
-use Entrust;
+
 
 
 
@@ -15,7 +16,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:owner');
+        return $this->middleware('role:owner');
     }
 
     /**
@@ -59,9 +60,8 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
+        
         $roles = Role::all()->pluck('name');
-        var_dump($roles);
-        var_dump($user->hasRole('owner'));
         return view('admins.users.user', compact('user', 'roles'));
     }
 
@@ -73,7 +73,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        return view('admins.users.edit', compact('user', 'roles'));
     }
 
     /**

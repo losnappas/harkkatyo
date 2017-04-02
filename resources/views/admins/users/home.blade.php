@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    Only an owner can visit this page.
+    Only an owner could visit this page.
     <ul>
     @foreach ($users as $user)
 		<li><a href="/admin/users/{{$user->id}}">{{$user->name}}</a></li>

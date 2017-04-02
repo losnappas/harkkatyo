@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
         App\User::find(3)->roles()->attach(App\Role::skip(1)->first());
 
 		App\User::find(3)->roles()->attach(App\Role::first());
-        $adminuser->attachRole(App\Role::skip(1)->first()->id);
+        $adminuser->roles()->attach(App\Role::skip(1)->first()->id);
 
     }
 }
