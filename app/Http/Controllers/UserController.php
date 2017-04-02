@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 //use Illuminate\Foundation\Auth\User;
+use App\Http\Requests\StoreCourse;
 use Auth;
 use App\User;
 use App\Role;
@@ -16,7 +17,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        return $this->middleware('role:owner');
+        return true;//$this->middleware('role:owner');
     }
 
     /**
@@ -60,8 +61,9 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        
-        $roles = Role::all()->pluck('name');
+        $this->authorize('view', $user);
+
+        $roles = Role::all();
         return view('admins.users.user', compact('user', 'roles'));
     }
 
@@ -85,9 +87,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreCourse $request, $id)
     {
-        //
+        $request->savechanges($id);
+        return redirect('/admin/users')->with('status', 'User updated');
     }
 
     /**

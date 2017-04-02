@@ -78,6 +78,7 @@ class CourseController extends Controller
      */
     public function update(StoreCourse $request, $id)
     {
+        var_dump($request);
         $request->savechanges($id);
         return redirect('/courses');//->back();
     }

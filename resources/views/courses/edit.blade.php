@@ -7,7 +7,7 @@
 @section('content')
 
 <form action="/courses/{{$course->id}}" method="post" class="pure-form">
-    {{ method_field('PUT') }}
+    {{ method_field('PATCH') }}
     {{ csrf_field() }}
     {{--todo: expand task--}}
     Add or remove tasks from your course:

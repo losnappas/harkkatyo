@@ -4,7 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCourse extends FormRequest // this is actually misnamed. . .
+
+// this is actually misnamed. . .
+//stores and edits courses, tasks and users
+class StoreCourse extends FormRequest 
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +27,17 @@ class StoreCourse extends FormRequest // this is actually misnamed. . .
      */
     public function rules()
     {
+        if (isset($this->user)) {
+            $user = \App\User::findOrFail($this->user);
+        }
+        
         return [
-            'title' => 'required|min:3',
-            'body' => 'required',
-            //add 'answer' => 'sometimes' later
+            'title' => 'sometimes|required|min:3',
+            'body' => 'sometimes|required',
+            'answer' => 'sometimes|required',
+            'name' => 'sometimes|required|max:255',
+            'email' => 'sometimes|required|email|max:255|unique:users,email,'.$user->id,
+            'password' => 'sometimes|required|min:6|confirmed',
         ];
     }
 
@@ -82,6 +92,11 @@ class StoreCourse extends FormRequest // this is actually misnamed. . .
         //bug or feature-to-be? heh
         if (isset($this->tasks)) {
             $thing->tasks()->sync($this->tasks);
+        }
+
+        //user roles changed?
+        if (isset($this->roles)) {
+            $thing->roles()->sync($this->roles);
         }
 
         $thing->fill($this->request->all())->save();

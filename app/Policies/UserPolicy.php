@@ -9,6 +9,7 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+
     /**
      * Determine whether the user can view the user.
      *
@@ -16,17 +17,17 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function view(User $user, User $user)
+    public function view(User $user, User $user1)
     {
         //return true if
         //owner/admin
         //user is teacher and student is enrolled on teacher's course
         //it is the user themselves user==user
-
         //will it glitch?
-        //if ($user->hasRole('owner|admin')) {
+        if ($user->hasRole(['owner', 'admin'])) {
             return true;
-        //}
+        }
+        return $user->id == $user1->id;
     }
 
     /**
@@ -47,7 +48,7 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function update(User $user, User $user)
+    public function update(User $user, User $user1)
     {
         //
     }
@@ -59,7 +60,7 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function delete(User $user, User $user)
+    public function delete(User $user, User $user1)
     {
         //
     }

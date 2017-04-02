@@ -82,18 +82,22 @@
         @include('layouts.sidebar')
         <div class="container">
             <div class="row">
-                @if(session('status'))
-                    <div>{{session('status')}}</div>  
-                @endif
-                @if(count($errors)>0)
-                    <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{$error}}</li>
-                    @endforeach
-                    </ul>
-                @endif
-
                 <div class="col-md-8 col-md-offset-2">
+                    @if(session('status'))
+                    <div class="alert alert-info">
+                        {{session('status')}}
+                    </div>
+                    @endif
+                    @if(count($errors)>0)
+                        <div class="alert alert-danger">
+                            <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{$error}}</li>
+                            @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             @yield('title')

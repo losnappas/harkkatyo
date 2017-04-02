@@ -8,7 +8,9 @@
     Only an owner could visit this page.
     <ul>
     @foreach ($users as $user)
-		<li><a href="/admin/users/{{$user->id}}">{{$user->name}}</a></li>
+    	@can('view', $user)
+			<li><a href="/admin/users/{{$user->id}}">{{$user->name}}</a></li>
+		@endcan
 	@endforeach
 	</ul>
 @endsection
