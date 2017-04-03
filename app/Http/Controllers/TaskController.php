@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCourse;
 use App\Task;
 
@@ -86,5 +87,22 @@ class TaskController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //was the answer to the task correct?
+    public function answer(Request $request, $id)
+    {
+        $answer = Task::findOrFail($id)->answer;
+        if ($request->wantsJson()) {
+            return response([
+                    $request->input('answer')==$answer;
+                ], 200);
+        }
+        return $request->input('answer')==$answer;
+    }
+
+    public function forvue($id)   
+    {
+        return Task::where('id', 1)->get();
     }
 }

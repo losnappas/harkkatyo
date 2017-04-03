@@ -6,7 +6,7 @@
 
 @section('content')
 
-    Body: {{$task->body}}
+    {{$task->body}}
     <br /><br />
     Answer: {{$task->answer}}
                 

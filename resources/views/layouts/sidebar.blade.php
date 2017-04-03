@@ -5,12 +5,12 @@
     <div class="well">
         <h4>Linkerinos</h4>
         <ul>
-	            <li><a href="/admin/users">Manage users</a></li>
-
-	        	<li><a href="/admin/owner">Manage owner things</a></li>
-	            
+            <li><a href="/admin/users">Manage users</a></li>
 	        <li><a href="/courses">Courses</a></li>
 	        <li><a href="/tasks">Tasks</a></li>
+            @if(Auth::check())
+                <li><a href="/admin/users/{{Auth::user()->id}}/enrolls">My courses</a></li>
+            @endif
         </ul>
     </div>
 

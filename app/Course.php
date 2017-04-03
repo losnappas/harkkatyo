@@ -29,4 +29,10 @@ class Course extends Model
     {
     	return $this->tasks()->create(['body' => $body, 'title'=>$title, 'deadline' => $deadline]);
     }
+
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

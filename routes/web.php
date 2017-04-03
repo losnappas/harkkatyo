@@ -17,16 +17,23 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index');
 
 Route::resource('/courses', 'CourseController');
 Route::resource('/tasks', 'TaskController');
 
+Route::post('/courses/{id}/enroll', 'CourseController@enroll');
+Route::post('/courses/{id}/start', 'CourseController@start');
+
+//for js
+Route::get('/api/task/{id}', 'TaskController@forvue');
 
 // uhh middleware=>web is what now?
 //Route::group(['middleware' => 'web'], function(){
 //prefix admin means '/admin/user' ..me thinks
 Route::group(['prefix' => 'admin'], function(){
+	Route::get('/users/{id}/enrolls', 'UserController@enrolls');
 	Route::resource('/users', 'UserController');
 });
 //});

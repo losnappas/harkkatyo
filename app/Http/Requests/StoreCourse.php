@@ -27,8 +27,9 @@ class StoreCourse extends FormRequest
      */
     public function rules()
     {
+        $user = '';
         if (isset($this->user)) {
-            $user = \App\User::findOrFail($this->user);
+            $user = \App\User::findOrFail($this->user)->id;
         }
         
         return [
@@ -36,7 +37,7 @@ class StoreCourse extends FormRequest
             'body' => 'sometimes|required',
             'answer' => 'sometimes|required',
             'name' => 'sometimes|required|max:255',
-            'email' => 'sometimes|required|email|max:255|unique:users,email,'.$user->id,
+            'email' => 'sometimes|required|email|max:255|unique:users,email,'.$user,
             'password' => 'sometimes|required|min:6|confirmed',
         ];
     }

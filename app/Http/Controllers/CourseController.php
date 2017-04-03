@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+//use Illuminate\Http\Request;
 use App\Http\Requests\StoreCourse;
 use App\Course;
 use App\Task;
+use Auth;
 
 
 class CourseController extends Controller
@@ -63,7 +65,7 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        $course = Course::find($id);
+        $course = Course::findOrFail($id);
         $tasks = Task::all();
         //$tasks = $course->tasks()->get();
         return view('courses.edit', compact('course', 'tasks'));
@@ -78,7 +80,6 @@ class CourseController extends Controller
      */
     public function update(StoreCourse $request, $id)
     {
-        var_dump($request);
         $request->savechanges($id);
         return redirect('/courses');//->back();
     }
@@ -92,5 +93,21 @@ class CourseController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    //enroll on a course
+    public function enroll($id)
+    {
+        $course = Course::findOrFail($id);
+        Auth::user()->courses()->toggle($course);
+        return redirect('/courses/'.$id)->with('status', 'Course un/enrollment successful');
+    }
+
+    public function start($id)
+    {
+        $course = Course::findOrFail($id);
+        $task = $course->tasks()->first();
+        return view('courses.do', compact('course', 'task'));
     }
 }

@@ -10,7 +10,7 @@
 ## How to use
 composer install 
 
-copy .env.example to .env
+~~copy .env.example to .env~~ autodone
 
 php artisan key:generate
 

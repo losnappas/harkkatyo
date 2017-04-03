@@ -5,10 +5,6 @@
 @endsection
 
 @section('content')
-    Only an admin can visit this page. <br />
-	Courses the user is enlisted on: <br />
-	soontm<br />
-
 	<table>
 	<thead>
 		@foreach($roles as $role)
@@ -26,5 +22,6 @@
 	</tr>
 	</tbody>
 	</table>
+	<a href="/admin/users/{{$user->id}}/enrolls">This guy's enrolled courses</a><br />
 	<a href="/admin/users/{{$user->id}}/edit">Edit this guy</a>
 @endsection

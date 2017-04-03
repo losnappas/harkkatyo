@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 //use Illuminate\Http\Request;
 //use Illuminate\Foundation\Auth\User;
 use App\Http\Requests\StoreCourse;
-use Auth;
 use App\User;
 use App\Role;
-
-
-
+use App\Course;
 
 
 class UserController extends Controller
@@ -102,5 +99,16 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+
+    //show list of courses enrolled by the user
+    public function enrolls($id)
+    {
+        $user = User::findOrFail($id);
+        $this->authorize('view', $user);
+        $courses = Course::all();
+        return view('admins.users.enrolls', compact('courses', 'user'));
     }
 }
