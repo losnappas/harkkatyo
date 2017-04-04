@@ -19,6 +19,6 @@ class TasksAndCoursesTableSeeder extends Seeder
         App\Course::first()->tasks()->attach(App\Task::all());
         //App\User::find(5)->teacher()->detach();
         //App\User::find(5)->teacher()->attach(App\Course::first());
-        App\Course::first()->teacher()->associate(App\User::find(5));
+        //App\Course::first()->teacher()->associate(App\User::find(5));
     }
 }

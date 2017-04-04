@@ -39,7 +39,7 @@ $factory->define(App\Course::class, function (Faker\Generator $faker)
 	return [
 		'body' => $faker->paragraph(3), 
 		'title' => $faker->unique()->word, 
-		'teacher' => 5
+		'teacher_id' => 5
 	];
 });
 

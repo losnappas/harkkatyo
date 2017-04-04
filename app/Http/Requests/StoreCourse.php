@@ -74,22 +74,19 @@ class StoreCourse extends FormRequest
         //unless model is Posts ofc.. form: {MODEL}Controller
         $class = $this->get_calling_class();
 
-        $course = new $class([
+        $newThing = new $class([
                 'body' => $this->body,
                 'title' => $this->title,
                 'answer' => $this->answer, //it's empty if the calling thing is Course so nbd
             ]);
-
-        
-        if (isset($this->teacher)) {
-            \App\User::find($this->teacher)->teacher()->save($course);
-        } else {
-            $course->save();            
+        if (isset($this->teacher_id)) {
+            $newThing->teacher()->associate(\App\User::find($this->teacher_id));
         }
 
+        $newThing->save();  
 
         if(isset($this->tasks)){
-            $course->tasks()->attach($this->tasks);
+            $newThing->tasks()->attach($this->tasks);
         }
     }
 

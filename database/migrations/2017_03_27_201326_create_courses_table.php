@@ -17,10 +17,10 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('body');
             $table->string('title');
-            $table->unsignedInteger('teacher');
+            $table->unsignedInteger('teacher_id');
             $table->timestamps();
 
-            $table->foreign('teacher')->references('id')->on('users');
+            $table->foreign('teacher_id')->references('id')->on('users');
         });
 
         Schema::create('tasks', function (Blueprint $table) {

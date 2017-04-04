@@ -94,11 +94,7 @@ class TaskController extends Controller
     public function answer(Request $request, $id)
     {
         $answer = Task::findOrFail($id)->answer;
-        if ($request->wantsJson()) {
-            return response([
-                    $request->input('answer')==$answer;
-                ], 200);
-        }
+        
         return $request->input('answer')==$answer;
     }
 
