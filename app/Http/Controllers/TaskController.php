@@ -8,6 +8,7 @@ use App\Task;
 
 class TaskController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -101,8 +102,4 @@ class TaskController extends Controller
         return $request->input('answer')==$answer;
     }
 
-    public function forvue($id)   
-    {
-        return Task::where('id', 1)->get();
-    }
 }

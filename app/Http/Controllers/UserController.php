@@ -86,6 +86,8 @@ class UserController extends Controller
      */
     public function update(StoreCourse $request, $id)
     {
+        $user = User::findOrFail($id);
+        $this->authorize('update', $user);
         $request->savechanges($id);
         return redirect('/admin/users')->with('status', 'User updated');
     }

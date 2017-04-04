@@ -16,9 +16,6 @@ require('./bootstrap');
 window.bus = new Vue();
 
 Vue.component('task-list', require('./components/TaskList.vue'));
-Vue.component('task-form', require('./components/TaskForm.vue'));
-Vue.component('task-entry', require('./components/TaskEntry.vue'));
-Vue.component('example', require('./components/Example.vue'));
 
 
 const app = new Vue({

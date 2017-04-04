@@ -39,6 +39,7 @@ class StoreCourse extends FormRequest
             'name' => 'sometimes|required|max:255',
             'email' => 'sometimes|required|email|max:255|unique:users,email,'.$user,
             'password' => 'sometimes|required|min:6|confirmed',
+            'teacher' => 'sometimes|required'
         ];
     }
 
@@ -70,13 +71,22 @@ class StoreCourse extends FormRequest
     {
         //calls 'create' based on which class called
         //so don't use plurals in controller names (postscontroller => postcontroller)
+        //unless model is Posts ofc.. form: {MODEL}Controller
         $class = $this->get_calling_class();
 
-        $course = $class::create([
+        $course = new $class([
                 'body' => $this->body,
                 'title' => $this->title,
                 'answer' => $this->answer, //it's empty if the calling thing is Course so nbd
             ]);
+
+        
+        if (isset($this->teacher)) {
+            \App\User::find($this->teacher)->teacher()->save($course);
+        } else {
+            $course->save();            
+        }
+
 
         if(isset($this->tasks)){
             $course->tasks()->attach($this->tasks);

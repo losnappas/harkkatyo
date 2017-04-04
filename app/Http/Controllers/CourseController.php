@@ -11,6 +11,10 @@ use Auth;
 
 class CourseController extends Controller
 {
+    public function forvue($id)   
+    {
+        return Course::find($id)->tasks()->get();
+    }
     /**
      * Display a listing of the resource.
      *

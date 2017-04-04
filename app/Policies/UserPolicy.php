@@ -27,6 +27,15 @@ class UserPolicy
         if ($user->hasRole(['owner', 'admin'])) {
             return true;
         }
+        
+/* //this is actually garbage?
+        if ($user->hasRole('teacher')) {
+            var_dump(explode(' ', $user1->courses()->pluck('teacher')));
+            if (in_array($user->id, explode(' ', $user1->courses()->pluck('teacher')))) {
+                return true;
+            }
+        }*/
+
         return $user->id == $user1->id;
     }
 
@@ -50,7 +59,10 @@ class UserPolicy
      */
     public function update(User $user, User $user1)
     {
-        //
+        if($user->hasRole(['owner', 'admin'])){
+            return true;
+        }
+        return $user->id == $user1->id;
     }
 
     /**
@@ -62,6 +74,10 @@ class UserPolicy
      */
     public function delete(User $user, User $user1)
     {
-        //
+        if($user->hasRole(['owner', 'admin'])){
+            return true;
+        }
+
+        return $user->id == $user1->id;
     }
 }

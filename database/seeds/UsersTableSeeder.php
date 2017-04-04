@@ -31,5 +31,13 @@ class UsersTableSeeder extends Seeder
 		App\User::find(3)->roles()->attach(App\Role::first());
         $adminuser->roles()->attach(App\Role::skip(1)->first()->id);
 
+        factory('App\User', 1)->create([
+                'name'=>'teacher',
+                'email'=>'12345@12345.com',
+                'password' => bcrypt('123123'),
+            ]);
+
+        App\User::find(5)->roles()->attach(App\Role::skip(2)->first());
+
     }
 }

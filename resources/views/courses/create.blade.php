@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-
 <form action="/courses" method="post" class="pure-form">
     {{ csrf_field() }}
     {{--todo: expand task--}}
@@ -17,7 +16,7 @@
             </label>
         </div>
     @endforeach
-
+    <input type="hidden" name="teacher" id="teacher" value="{{Auth::user()->id}}">
     <fieldset class="pure-group">
         <input class="pure-input-1-2" type="text" name="title" id="title" placeholder="Title">
         <textarea class="pure-input-1-2" name="body" id="body" cols="30" rows="10" placeholder="Description" ></textarea>
