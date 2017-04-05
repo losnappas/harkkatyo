@@ -15,6 +15,7 @@ require('./bootstrap');
 
 window.bus = new Vue();
 
+
 Vue.component('task-list', require('./components/TaskList.vue'));
 
 

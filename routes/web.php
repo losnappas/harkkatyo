@@ -20,18 +20,22 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::resource('/courses', 'CourseController');
-Route::resource('/tasks', 'TaskController');
 
-Route::post('/courses/{id}/enroll', 'CourseController@enroll');
-Route::post('/courses/{id}/start', 'CourseController@start');
+Route::group(['middleware'=>'auth'], function(){
+	Route::resource('/courses', 'CourseController');
+	Route::resource('/tasks', 'TaskController');
 
-//for js
-Route::get('/courses/{id}/tasks', 'CourseController@forvue');
-
-
-//prefix admin means '/admin/user' ..me thinks
-Route::group(['prefix' => 'admin'], function(){
-	Route::get('/users/{id}/enrolls', 'UserController@enrolls');
-	Route::resource('/users', 'UserController');
+	Route::post('/courses/{id}/enroll', 'CourseController@enroll');
+	Route::post('/courses/{id}/start', 'CourseController@start');
+	
+	//for js
+	Route::get('/courses/{id}/tasks', 'CourseController@forvue');
+	
+	//prefix admin means '/admin/user' ..me thinks
+	Route::group(['prefix' => 'admin'], function(){
+		Route::get('/users/{id}/enrolls', 'UserController@enrolls');
+		Route::resource('/users', 'UserController');
+	});
+	
 });
+

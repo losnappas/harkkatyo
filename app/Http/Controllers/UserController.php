@@ -12,10 +12,7 @@ use App\Course;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        return true;//$this->middleware('role:owner');
-    }
+
 
     /**
      * Display a listing of the resource.
@@ -88,6 +85,17 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $this->authorize('update', $user);
+
+        if ($request->has('roles')) {
+            $this->authorize('changeRole', $user);
+        }
+
+        foreach ($request->roles as $role) {
+            if ($role!=null && $role == 1) {
+                return back()->with('status', 'Owner profile cannot be modified');
+            }
+        }
+
         $request->savechanges($id);
         return redirect('/admin/users')->with('status', 'User updated');
     }
@@ -100,7 +108,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $this->authorize('destroy', $user);
+        User::destroy($user);
+        return redirect('/admin/users')->with('status', 'User removed');
     }
 
 

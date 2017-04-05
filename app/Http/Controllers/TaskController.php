@@ -9,6 +9,7 @@ use App\Task;
 class TaskController extends Controller
 {
 
+
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +40,7 @@ class TaskController extends Controller
     public function store(StoreCourse $request)
     {
         $request->persist();
-        return redirect('/tasks')->with('status', 'Task created');
+        return back()->with('status', 'Task created');
     }
 
     /**

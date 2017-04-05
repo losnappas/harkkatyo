@@ -23,18 +23,17 @@ class UserPolicy
         //owner/admin
         //user is teacher and student is enrolled on teacher's course
         //it is the user themselves user==user
-        //will it glitch?
         if ($user->hasRole(['owner', 'admin'])) {
             return true;
         }
         
-/* //this is actually garbage?
+        // teacher can see profiles if they are enrolled on teacher's course
         if ($user->hasRole('teacher')) {
-            var_dump(explode(' ', $user1->courses()->pluck('teacher')));
-            if (in_array($user->id, explode(' ', $user1->courses()->pluck('teacher')))) {
-                return true;
+            foreach ($user1->courses as $course) {
+                if ($course->teacher->id == $user->id)
+                    return true;
             }
-        }*/
+        }
 
         return $user->id == $user1->id;
     }
@@ -62,6 +61,7 @@ class UserPolicy
         if($user->hasRole(['owner', 'admin'])){
             return true;
         }
+
         return $user->id == $user1->id;
     }
 
@@ -79,5 +79,13 @@ class UserPolicy
         }
 
         return $user->id == $user1->id;
+    }
+
+    public function changeRole(User $user)
+    {
+        if($user->hasRole(['owner', 'admin'])){
+            return true;
+        }
+        return false;
     }
 }

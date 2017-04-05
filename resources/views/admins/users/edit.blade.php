@@ -10,12 +10,13 @@
     {!! method_field('PATCH') !!}
     {{ csrf_field() }}
 
+    @can('changeRole', Auth::user())
     @foreach ($roles as $role)
     @if ($role->name == 'owner')
         @if ($user->hasRole($role->name))
             <div class="checkbox">
             <label>
-                <input type="checkbox" {{$user->hasRole($role->name) ? 'checked' : ''}} name="roles[]" value="{{$role->id}}" disabled>{{$role->display_name}}
+                <input type="checkbox" {{$user->hasRole($role->name) ? 'checked' : ''}} name="roles[]" value="{{$role->id}}" >{{$role->display_name}}
             </label>
         </div>
         @endif
@@ -27,6 +28,7 @@
             </label>
         </div>
     @endforeach
+    @endcan
     <label for="name">Username</label>
     <input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}" required>
     <label for="name">Email</label>

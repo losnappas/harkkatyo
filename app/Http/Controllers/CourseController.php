@@ -58,7 +58,9 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::find($id);
-        return view('courses.course', compact('course'));
+        $enrolled = $this->checkEnroll($id);
+
+        return view('courses.course', compact('course', 'enrolled'));
     }
 
     /**
@@ -71,7 +73,6 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($id);
         $tasks = Task::all();
-        //$tasks = $course->tasks()->get();
         return view('courses.edit', compact('course', 'tasks'));
     }
 
@@ -104,8 +105,13 @@ class CourseController extends Controller
     public function enroll($id)
     {
         $course = Course::findOrFail($id);
+        $enrolled = $this->checkEnroll($id);
         Auth::user()->courses()->toggle($course);
-        return redirect('/courses/'.$id)->with('status', 'Course un/enrollment successful');
+        if ($enrolled) 
+            $status = 'Course unenrollment success';
+        else
+            $status = 'Course enrollment success';
+        return redirect('/courses/'.$id)->with('status', $status);
     }
 
     public function start($id)
@@ -113,5 +119,17 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
         $task = $course->tasks()->first();
         return view('courses.do', compact('course', 'task'));
+    }
+
+    //where should this be placed in?
+    //check if currently logged user has enrolled on $id course
+    function checkEnroll($id)
+    {
+        foreach (Auth::user()->courses as $course) {
+            if ($course != null && $course->id == $id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

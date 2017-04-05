@@ -22,7 +22,13 @@
 		
 		<form action="/courses/{{$course->id}}/enroll" method="post" class="pure-form">
 			{{ csrf_field() }}
-			<button type="submit">Un/enroll this course</button>
+			<button type="submit">
+			@if ($enrolled)
+				Unenroll
+			@else
+				Enroll this course
+			@endif
+			</button>
 		</form>
 	@endif
 	<br />
