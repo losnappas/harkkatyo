@@ -5,12 +5,10 @@
 @endsection
 
 @section('content')
-  <div id="task">
 
     <task-list
       courseid="{{$course->id}}">
     </task-list>
 
-  </div>
 
 @endsection

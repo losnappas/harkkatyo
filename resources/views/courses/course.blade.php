@@ -6,7 +6,7 @@
 
 @section('content')
 
-    {{$course->body}}
+    {!! strip_tags($course->body, '<h1><b><strike><p>') !!}
     <br /><br />
     Tasks:
     <ul>

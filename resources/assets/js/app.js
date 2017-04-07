@@ -17,8 +17,10 @@ window.bus = new Vue();
 
 
 Vue.component('task-list', require('./components/TaskList.vue'));
-
+Vue.component('custom-editor', require('./components/CustomEditor.vue'));
 
 const app = new Vue({
-    el: '#task'
+    el: '#editor'
 });
+
+

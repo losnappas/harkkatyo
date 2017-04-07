@@ -17,6 +17,7 @@ class RolesAndPermissionsTableSeeder extends Seeder
         App\Role::create(['name'=>'student', 'display_name'=>'A student', 'description' => 'nothing but a student']);
         // guest? no need rly. \App\Role::create(['name'=>'guest', 'display_name'=>'A guest', 'description' => 'empty for now']);
 
+        //admin/owner/////covered by userpolicy
         App\Permission::create(['name'=>'modify-users', 'display_name'=>'modify users', 'description' => 'Add/remove/modify user data']);
 
         App\Permission::create(['name'=>'create-courses', 'display_name'=>'create courses', 'description' => 'Add/remove/modify courses']);

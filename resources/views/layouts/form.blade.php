@@ -13,7 +13,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ secure_asset('https://unpkg.com/purecss@0.6.2/build/pure-min.css') }}" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous">
-    @yield('style')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
 
     <!-- Scripts -->
     <script>
@@ -107,8 +107,10 @@
                             @yield('title')
                         </div>
                         
-                        <div class="panel-body" id="editor">
-                            @yield('content')
+                        <div class="panel-body">
+                            <div id="editor">
+                                @yield('content')
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -118,6 +120,7 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    @yield('script')
+    <script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
+    <script src="https://cdn.rawgit.com/FranzSkuffka/vue-medium-editor/master/dist/vue-medium-editor.min.js" ></script>
 </body>
 </html>

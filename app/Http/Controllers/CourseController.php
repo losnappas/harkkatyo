@@ -33,6 +33,7 @@ class CourseController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Course::class);
         $tasks = Task::all();
         return view('courses.create', compact('tasks'));
     }
@@ -45,7 +46,10 @@ class CourseController extends Controller
      */
     public function store(StoreCourse $request)
     {
+        $this->authorize('create');
         $request->persist();
+
+
         return redirect('/courses')->with('status', 'Course created');
     }
 
@@ -58,6 +62,7 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::find($id);
+        $this->authorize('view', $course);
         $enrolled = $this->checkEnroll($id);
 
         return view('courses.course', compact('course', 'enrolled'));
@@ -72,6 +77,7 @@ class CourseController extends Controller
     public function edit($id)
     {
         $course = Course::findOrFail($id);
+        $this->authorize('update', $course);
         $tasks = Task::all();
         return view('courses.edit', compact('course', 'tasks'));
     }
@@ -85,6 +91,8 @@ class CourseController extends Controller
      */
     public function update(StoreCourse $request, $id)
     {
+        $course = Course::findOrFail($id);
+        $this->authorize('update', $course);
         $request->savechanges($id);
         return redirect('/courses');//->back();
     }
@@ -97,7 +105,10 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $course = Course::findOrFail($id);
+        $this->authorize('delete', $course);
+        $course->delete();
+        return redirect('/courses')->with('status', 'Course deleted');
     }
 
 
@@ -114,11 +125,11 @@ class CourseController extends Controller
         return redirect('/courses/'.$id)->with('status', $status);
     }
 
+    //start the course
     public function start($id)
     {
         $course = Course::findOrFail($id);
-        $task = $course->tasks()->first();
-        return view('courses.do', compact('course', 'task'));
+        return view('courses.do', compact('course'));
     }
 
     //where should this be placed in?

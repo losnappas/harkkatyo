@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.form')
 
 @section('title')
     Edit task number {{$task->id}}
@@ -12,7 +12,8 @@
     <fieldset class="pure-group">
         <input class="pure-input-1-2" type="text" name="title" id="title" placeholder="Title" value="{{$task->title}}">
         <input class="pure-input-1-2" type="text" name="answer" id="answer" placeholder="Answer" value="{{$task->answer}}">
-        <textarea class="pure-input-1-2" name="body" id="body" cols="30" rows="10" placeholder="Description">{{$task->body}}</textarea>
+      
+ 		<custom-editor body="{{$task->body}}"></custom-editor>
     </fieldset>
 
     <button type="submit">Submit changes</button>

@@ -17,6 +17,7 @@ class TaskController extends Controller
      */
     public function index()
     {
+        $this->authorize('index', Task::class);
         $tasks = Task::all();
         return view('tasks.home', compact('tasks'));
     }
@@ -28,6 +29,7 @@ class TaskController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Task::class);
         return view('tasks.create');
     }
 
@@ -39,6 +41,7 @@ class TaskController extends Controller
      */
     public function store(StoreCourse $request)
     {
+        $this->authorize('create', Task::class);
         $request->persist();
         return back()->with('status', 'Task created');
     }
@@ -52,6 +55,7 @@ class TaskController extends Controller
     public function show($id)
     {
         $task = Task::find($id);
+        $this->authorize('view', $task);
         return view('tasks.task', compact('task'));
     }
 
@@ -64,6 +68,7 @@ class TaskController extends Controller
     public function edit($id)
     {
         $task = Task::findOrFail($id);
+        $this->authorize('update', $task);
         return view('tasks.edit', compact('task'));
     }
 
@@ -77,6 +82,7 @@ class TaskController extends Controller
     public function update(StoreCourse $request, $id)
     {
         $request->savechanges($id);
+        $this->authorize('update', $task);
         return redirect('/tasks');
     }
 
@@ -88,15 +94,18 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $this->authorize('delete', $task);
+        $task->delete();
+        return redirect('/tasks')->with('status', 'Task deleted');
     }
 
-    //was the answer to the task correct?
-    public function answer(Request $request, $id)
-    {
-        $answer = Task::findOrFail($id)->answer;
+    // //was the answer to the task correct?
+    // public function answer(Request $request, $id)
+    // {
+    //     $answer = Task::findOrFail($id)->answer;
         
-        return $request->input('answer')==$answer;
-    }
+    //     return $request->input('answer')==$answer;
+    // }
 
 }

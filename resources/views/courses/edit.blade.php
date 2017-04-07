@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@include('layouts.partials.form')
+
 @section('title')
     Edit course
 @endsection
@@ -10,7 +12,7 @@
     {{ method_field('PATCH') }}
     {{ csrf_field() }}
     {{--todo: expand task--}}
-    Add or remove tasks from your course:
+    Add or remove tasks from your course: (selecting no tasks keeps the current tasks)
 
 
     {{-- got time? make checkboxes checked if task is already associated --}}
@@ -24,7 +26,7 @@
 
     <fieldset class="pure-group">
         <input class="pure-input-1-2" type="text" name="title" id="title" placeholder="Title" value="{{$course->title}}">
-        <textarea class="pure-input-1-2" name="body" id="body" cols="30" rows="10" placeholder="Description">{{$course->body}}</textarea>
+        <custom-editor body="{{$course->body}}"></custom-editor>        
     </fieldset>
 
     <button type="submit">Submit changes</button>

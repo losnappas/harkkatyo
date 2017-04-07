@@ -9,6 +9,14 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+    //always return true if
+    //owner/admin
+    public function before(User $user)
+    {
+        if ($user->hasRole(['owner', 'admin'])) {
+            return true;
+        }
+    }
 
     /**
      * Determine whether the user can view the user.
@@ -19,13 +27,10 @@ class UserPolicy
      */
     public function view(User $user, User $user1)
     {
-        //return true if
-        //owner/admin
+
         //user is teacher and student is enrolled on teacher's course
         //it is the user themselves user==user
-        if ($user->hasRole(['owner', 'admin'])) {
-            return true;
-        }
+        
         
         // teacher can see profiles if they are enrolled on teacher's course
         if ($user->hasRole('teacher')) {
@@ -58,10 +63,6 @@ class UserPolicy
      */
     public function update(User $user, User $user1)
     {
-        if($user->hasRole(['owner', 'admin'])){
-            return true;
-        }
-
         return $user->id == $user1->id;
     }
 
@@ -74,18 +75,11 @@ class UserPolicy
      */
     public function delete(User $user, User $user1)
     {
-        if($user->hasRole(['owner', 'admin'])){
-            return true;
-        }
-
         return $user->id == $user1->id;
     }
 
     public function changeRole(User $user)
-    {
-        if($user->hasRole(['owner', 'admin'])){
-            return true;
-        }
+    {// so basically this was "hasRole" and almost obselete since "before" func.
         return false;
     }
 }

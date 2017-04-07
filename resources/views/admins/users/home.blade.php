@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    Only an owner could visit this page.
+    Welcome to the users page.
     <ul>
     @foreach ($users as $user)
     	@can('view', $user)

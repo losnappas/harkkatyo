@@ -5,10 +5,9 @@
 
             <div v-if="current < tasks.length">
             <h4>
-                {{tasks[current].title}}
-            </h4>
-
-            <p>{{tasks[current].body}}</p>
+                Task: {{tasks[current].title}}
+            </h4><br/>
+            <p v-html="strip()"></p>
             <input v-model="answer" placeholder="answer" value="answer" ref="answer" @keyup.enter="checkAnswer(answer)"
               @keydown="clear" />
             <button v-on:click="checkAnswer(answer)">Submit</button>
@@ -67,6 +66,7 @@
                 return '/courses/'+this.courseid;
             },
 
+
             className(){
                 if (this.tries>0) {
                     return 'alert alert-warning';
@@ -98,6 +98,16 @@
                 this.$refs.answer.focus();
             },
 
+            strip: function(){
+                  var allowed = '<h1><b><strike><p>';
+                  allowed = (((allowed || '') + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('')
+                  var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi
+                  var commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi
+                  return this.tasks[this.current].body.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+                    return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : ''
+                  })
+              
+            },
             clear: function (){
                 if (this.message.length>0)
                     this.message='';

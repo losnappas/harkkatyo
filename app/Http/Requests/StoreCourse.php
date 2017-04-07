@@ -79,10 +79,10 @@ class StoreCourse extends FormRequest
                 'title' => $this->title,
                 'answer' => $this->answer, //it's empty if the calling thing is Course so nbd
             ]);
+        
         if (isset($this->teacher_id)) {
             $newThing->teacher()->associate(\App\User::find($this->teacher_id));
         }
-
         $newThing->save();  
 
         if(isset($this->tasks)){
