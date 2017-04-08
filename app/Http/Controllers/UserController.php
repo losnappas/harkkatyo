@@ -88,13 +88,14 @@ class UserController extends Controller
         if ($request->has('roles')) {
             $this->authorize('changeRole', $user);
         }
+        if ($request->has('roles')) {
 
         foreach ($request->roles as $role) {
             if ($role!=null && $role == 1) {
                 return back()->with('status', 'Owner profile cannot be modified');
             }
         }
-
+        }
         $request->savechanges($id);
         return redirect('/admin/users')->with('status', 'User updated');
     }
