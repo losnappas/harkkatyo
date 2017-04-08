@@ -7,7 +7,8 @@
 @section('content')
 
     <task-list
-      courseid="{{$course->id}}">
+      courseid="{{$course->id}}"
+      url="{{url('/courses/' .$course->id .'/tasks')}}">
     </task-list>
 
 

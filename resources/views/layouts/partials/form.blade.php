@@ -3,6 +3,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
 @endsection
 @section('script')
-	<script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
     <script src="https://cdn.rawgit.com/FranzSkuffka/vue-medium-editor/master/dist/vue-medium-editor.min.js" ></script>
 @endsection

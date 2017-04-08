@@ -35,6 +35,10 @@
             courseid: {
                 type: String,
                 required: true,
+            },
+            url: {
+                type: String,
+                required: true
             }
             
         },
@@ -53,7 +57,7 @@
 
         created() {
 
-            axios.get('/courses/' + this.courseid +'/tasks')
+            axios.get(this.url)
                 .then(response => {
                     this.tasks = response.data;
                     this.loading = false;

@@ -9,7 +9,7 @@
 
 @section('content')
 
-<form action="{{route('courses.create')}}" method="post" class="pure-form">
+<form action="{{route('courses.store')}}" method="post" class="pure-form">
     {{ csrf_field() }}
     {{--todo: expand task--}}
     Add tasks for your course:

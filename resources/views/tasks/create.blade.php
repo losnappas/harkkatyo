@@ -8,7 +8,7 @@
 
 @section('content')
 
-<form action="{{route('tasks.create')}}" method="post" class="pure-form">
+<form action="{{route('tasks.store')}}" method="post" class="pure-form">
     {{ csrf_field() }}
     <fieldset class="pure-group">
         <input class="pure-input-1-2" type="text" name="title" id="title" placeholder="Title">
