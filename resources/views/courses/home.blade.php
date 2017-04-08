@@ -9,17 +9,17 @@
 
     <ul>
         @foreach ($courses as $course)
-            <li><a href="/courses/{{$course->id}}">{{$course->title}}</a>
+            <li><a href="{{url('/courses/'.$course->id)}}">{{$course->title}}</a>
             @can('update', $course)
-                <a href="/courses/{{$course->id}}/edit">Edit</a>
+                <a href="{{url('/courses/'.$course->id.'/edit')}}">Edit</a>
             @endcan
             @can('delete', $course)
-                <a href="/courses/{{$course->id}}"
+                <a href="{{url('/courses/'.$course->id)}}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('delete-form{{$course->id}}').submit();">
                                             Delete
                                         </a>
-                <form id="delete-form{{$course->id}}" action="/courses/{{$course->id}}" method="post" style="display: none;">
+                <form id="delete-form{{$course->id}}" action="{{route('courses.destroy', ['id'=>$course->id])}}" method="post" style="display: none;">
                     {{method_field('DELETE')}}
                     {{csrf_field()}}
                 </form>
@@ -31,7 +31,7 @@
     This is the 'courses' page
     @can('create', \App\Course::class)
     <ul>
-        <li><a href="{{url('courses/create')}}">create</a></li>
+        <li><a href="{{url('/courses/create')}}">create</a></li>
     </ul>
     @endcan
 @endsection

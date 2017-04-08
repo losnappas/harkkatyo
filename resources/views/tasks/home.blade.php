@@ -7,18 +7,18 @@
 @section('content')
 <ul>
     @foreach ($tasks as $task)
-        <li><a href="/tasks/{{$task->id}}">{{$task->title}}</a>
+        <li><a href="{{url('/tasks/'.$task->id)}}">{{$task->title}}</a>
 
         @can('update', $task)
-        	<a href="/tasks/{{$task->id}}/edit">Edit</a>
+        	<a href="{{url('/tasks/'.$task->id.'/edit')}}">Edit</a>
         @endcan
         @can('delete', $task)
-       			 <a href="/tasks/{{$task->id}}"
+       			 <a href="{{url('/tasks/'.$task->id)}}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('delete-form{{$task->id}}').submit();">
                                             Delete
                                         </a>
-                <form id="delete-form{{$task->id}}" action="/tasks/{{$task->id}}" method="post" style="display: none;">
+                <form id="delete-form{{$task->id}}" action="{{route('tasks.destroy', ['id'=>$task->id])}}" method="post" style="display: none;">
                     {{method_field('DELETE')}}
                     {{csrf_field()}}
                 </form>
@@ -30,7 +30,7 @@
     This is the 'tasks' page
     @can('create', \App\Task::class)
 		<ul>
-		    <li><a href="/tasks/create">create</a></li>
+		    <li><a href="{{url('/tasks/create')}}">create</a></li>
 		</ul>
 	@endcan
 @endsection

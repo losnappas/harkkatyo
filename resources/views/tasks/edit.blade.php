@@ -9,7 +9,7 @@
 
 @section('content')
 
-<form action="/tasks/{{$task->id}}" method="post" class="pure-form">
+<form action="{{route('tasks.update', ['id'=>$task->id])}}" method="post" class="pure-form">
     {{ method_field('PATCH') }}
     {{ csrf_field() }}
     <fieldset class="pure-group">

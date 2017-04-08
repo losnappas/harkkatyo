@@ -8,7 +8,7 @@
 
 @section('content')
 
-<form action="/courses/{{$course->id}}" method="post" class="pure-form">
+<form action="{{route('courses.update', ['id'=>$course->id])}}" method="post" class="pure-form">
     {{ method_field('PATCH') }}
     {{ csrf_field() }}
     {{--todo: expand task--}}

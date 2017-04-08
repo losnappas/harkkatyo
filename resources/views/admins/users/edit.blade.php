@@ -6,7 +6,7 @@
 
 @section('content')
 
-<form action="/admin/users/{{$user->id}}" method="post" class="pure-form">
+<form action="{{route('admin.users.update', ['id' => $user->id])}}" method="post" class="pure-form">
     {!! method_field('PATCH') !!}
     {{ csrf_field() }}
 

@@ -22,6 +22,6 @@
 	</tr>
 	</tbody>
 	</table>
-	<a href="/admin/users/{{$user->id}}/enrolls">This guy's enrolled courses</a><br />
-	<a href="/admin/users/{{$user->id}}/edit">Edit this guy</a>
+	<a href="{{url('/admin/users/'.$user->id.'/enrolls')}}">This guy's enrolled courses</a><br />
+	<a href="{{url('/admin/users/'.$user->id.'/edit')}}">Edit this guy</a>
 @endsection

@@ -7,7 +7,7 @@
 @section('content')
 	<ul>
 		@forelse($user->courses as $course)
-			<li><a href="/courses/{{$course->id}}">{{$course->title}}</a></li>
+			<li><a href="{{url('/courses/'.$course->id)}}">{{$course->title}}</a></li>
 		@empty
 			<p>Not yet enrolled on any courses</p>
 		@endforelse

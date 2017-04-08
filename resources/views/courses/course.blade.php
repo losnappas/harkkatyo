@@ -20,7 +20,7 @@
 	{{--great spot for some JS? to be seen.. nah toggle 'has it'--}}
 	@if(Auth::check())
 		
-		<form action="/courses/{{$course->id}}/enroll" method="post" class="pure-form">
+		<form action="{{route('courses.enroll', ['id'=>$course->id])}}" method="post" class="pure-form">
 			{{ csrf_field() }}
 			<button type="submit">
 			@if ($enrolled)
@@ -32,7 +32,7 @@
 		</form>
 	@endif
 	<br />
-	<form action="/courses/{{$course->id}}/start" method="post" class="pure-form">
+	<form action="{{route('courses.start', ['id' => $course->id])}}" method="post" class="pure-form">
 		{{ csrf_field() }}
 		<button type="submit">Start the course</button>
 	</form>

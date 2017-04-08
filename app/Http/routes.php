@@ -18,15 +18,18 @@ Route::get('/', function () {
 Route::auth();
 
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', function(){
+    return view('welcome');
+});
+// 'HomeController@index');
 
 
 Route::group(['middleware'=>'auth'], function(){
 	Route::resource('/courses', 'CourseController');
 	Route::resource('/tasks', 'TaskController');
 
-	Route::post('/courses/{id}/enroll', 'CourseController@enroll');
-	Route::post('/courses/{id}/start', 'CourseController@start');
+	Route::post('/courses/{id}/enroll', 'CourseController@enroll')->name('courses.enroll');
+	Route::post('/courses/{id}/start', 'CourseController@start')->name('courses.start');
 	
 	//for js
 	Route::get('/courses/{id}/tasks', 'CourseController@forvue');

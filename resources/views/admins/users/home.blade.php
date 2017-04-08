@@ -9,7 +9,7 @@
     <ul>
     @foreach ($users as $user)
     	@can('view', $user)
-			<li><a href="/admin/users/{{$user->id}}">{{$user->name}}</a></li>
+			<li><a href="{{url('/admin/users/'.$user->id)}}">{{$user->name}}</a></li>
 		@endcan
 	@endforeach
 	</ul>
