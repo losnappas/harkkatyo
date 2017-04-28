@@ -8,7 +8,7 @@
 
     <task-list
       courseid="{{$course->id}}"
-      url="{{url('/courses/' .$course->id .'/tasks')}}">
+      url="{{url('/courses/' .$course->id)}}">
     </task-list>
 
 
