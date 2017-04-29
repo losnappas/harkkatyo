@@ -20,17 +20,6 @@ class Course extends Model
         return $this->belongsToMany(Task::class);
     }
 
-    /**
-     * Add task to course
-     *
-     * @return task..?
-     */
-    public function addTask($body, $title, $deadline)
-    {
-    	return $this->tasks()->create(['body' => $body, 'title'=>$title, 'deadline' => $deadline]);
-    }
-
-
     public function users()
     {
         return $this->belongsToMany(User::class);
