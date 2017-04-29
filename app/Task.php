@@ -12,16 +12,28 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'body', 'title'/*title not in ER*/, 'creation_date', 'type', 'creator'
+        'body', 'title'/*==type*/, 'creation_date', 'creator'
     ];
 
+    //M:N
 	public function courses()
     {							
         return $this->belongsToMany(Course::class);
     }
 
-    public function answers()
+    //task 1:N thing
+    public function answer()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function attempt()
+    {
+        return $this->hasMany(Attempt::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class);
     }
 }

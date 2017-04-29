@@ -43,4 +43,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Course::class);
     }
+
+    public function creator()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    public function session()
+    {
+        return $this->hasMany(Session::class);
+    }
 }

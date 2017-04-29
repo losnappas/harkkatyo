@@ -24,14 +24,14 @@ class Course extends Model
      * Add task to course
      *
      * @return task..?
-     */
-    public function addTask($body, $title, $deadline)
+     *///not used/leftover?
+    /*public function addTask($body, $title, $deadline)
     {
     	return $this->tasks()->create(['body' => $body, 'title'=>$title, 'deadline' => $deadline]);
-    }
+    }*/
 
 
-    public function users()
+    public function user()
     {
         return $this->belongsToMany(User::class);
     }
@@ -39,5 +39,10 @@ class Course extends Model
     public function teacher()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function session()
+    {
+        return $this->hasMany(Session::class);
     }
 }

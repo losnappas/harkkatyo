@@ -16,8 +16,9 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('body');
             $table->string('title');
-            $table->unsignedInteger('teacher_id');
-            $table->timestamps();
+            $table->unsignedInteger('teacher_id'); //creator
+            $table->unsignedInteger('task_count'); //added TIKO
+            $table->timestamps(); //created_at included here
 
             $table->foreign('teacher_id')->references('id')->on('users');
         });
@@ -25,10 +26,13 @@ class CreateCoursesTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('body');
-            $table->string('title');
+            $table->string('title'); // will serve as type in TIKO
             $table->string('answer');
+            $table->unsignedInteger('teacher_id'); //creator
             //$table->date('deadline');
             $table->timestamps();
+
+            $table->foreign('teacher_id')->references('id')->on('users');
         });
 
         Schema::create('course_task', function (Blueprint $table)
