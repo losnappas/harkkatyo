@@ -49,7 +49,7 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-    public function session()
+    public function sessions()
     {
         return $this->hasMany(Session::class);
     }

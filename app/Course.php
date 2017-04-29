@@ -31,7 +31,7 @@ class Course extends Model
     }*/
 
 
-    public function user()
+    public function users()
     {
         return $this->belongsToMany(User::class);
     }
@@ -41,7 +41,7 @@ class Course extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function session()
+    public function sessions()
     {
         return $this->hasMany(Session::class);
     }

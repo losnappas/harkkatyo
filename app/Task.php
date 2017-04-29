@@ -22,12 +22,12 @@ class Task extends Model
     }
 
     //task 1:N thing
-    public function answer()
+    public function answers()
     {
         return $this->hasMany(Answer::class);
     }
 
-    public function attempt()
+    public function attempts()
     {
         return $this->hasMany(Attempt::class);
     }

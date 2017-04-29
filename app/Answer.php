@@ -10,7 +10,7 @@ class Answer extends Model
         'body'
     ];
 
-    public function task()
+    public function tasks()
     {
     	return $this->belongsTo(Task::class);
     }

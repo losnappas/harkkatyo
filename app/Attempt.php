@@ -10,12 +10,12 @@ class Attempt extends Model
         'start', 'end', 'correct', 'count', 'body'
     ];
 
-    public function session()
+    public function sessions()
     {
     	return $this->belongsTo(Session::class);
     }
 
-    public function task()
+    public function tasks()
     {
     	return $this->belongsTo(Task::class);
     }

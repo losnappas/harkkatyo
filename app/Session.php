@@ -10,17 +10,17 @@ class Session extends Model
         'start', 'end', 'completed'
     ];
 
-    public function course()
+    public function courses()
     {
     	return $this->belongsTo(Course::class);
     }
 
-    public function user()
+    public function users()
     {
     	return $this->belongsTo(User::class);
     }
 
-    public function attempt()
+    public function attempts()
     {
     	return $this->hasMany(Attempt::class);
     }
