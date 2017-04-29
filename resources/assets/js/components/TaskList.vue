@@ -57,7 +57,7 @@
 
         created() {
 
-            axios.get(this.url+'/tasks')
+            axios.get(this.url)
                 .then(response => {
                     this.tasks = response.data;
                     this.loading = false;
@@ -67,7 +67,7 @@
         },
         computed:{
             href(){
-                return this.url;
+                return '/courses/'+this.courseid;
             },
 
 

@@ -12,7 +12,7 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
-        'body', 'title'
+        'body', 'title', 'creation_date', 'task_count', 'creator'
     ];
 
     public function tasks()
