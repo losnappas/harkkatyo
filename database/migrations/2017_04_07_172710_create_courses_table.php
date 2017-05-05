@@ -27,16 +27,18 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('body');
             $table->string('title'); // will serve as type in TIKO
-            $table->string('answer');
-            $table->unsignedInteger('teacher_id'); //creator
-            //$table->date('deadline');
+            // $table->string('answer'); //gotta fix this.
+            $table->unsignedInteger('creator_id'); //creator
             $table->timestamps();
 
-            $table->foreign('teacher_id')->references('id')->on('users');
+            $table->foreign('creator_id')->references('id')->on('users');
         });
 
         Schema::create('course_task', function (Blueprint $table)
         {
+            //how manieth question
+            $table->unsignedInteger('count');
+
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('task_id');
 
@@ -47,9 +49,7 @@ class CreateCoursesTable extends Migration
 
             $table->foreign('course_id')->references('id')->on('courses')
                 ->onUpdate('cascade')->onDelete('cascade');
-            
-            //no foreign key constraints (vs entrust_setup_tables)? interesting
-            //changed to fk:s for cascade effects
+
             $table->primary(['course_id', 'task_id']);
         });
     }

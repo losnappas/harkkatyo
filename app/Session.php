@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Session extends Model
 {
     protected $fillable = [
-        'start', 'end', 'completed'
+        'end', 'completed'
     ];
 
-    public function courses()
+    public function course()
     {
     	return $this->belongsTo(Course::class);
     }
 
-    public function users()
+    public function user()
     {
     	return $this->belongsTo(User::class);
     }

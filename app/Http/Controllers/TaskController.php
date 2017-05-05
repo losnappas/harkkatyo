@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCourse;
 use App\Task;
+use App\Answer;
+use Auth;
 // use App\Http\Requests;
 
 class TaskController extends Controller
@@ -38,11 +40,28 @@ class TaskController extends Controller
      * @param  \App\Http\Requests\StoreCourse  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCourse $request)
+    public function store(Request $request/*StoreCourse $request*/)
     {
-        $this->authorize('create', Task::class);
-        $request->persist();
+        $task = new Task([
+            'body' => $request->body,
+            'title' => $request->title,
+        ]);
+        $task->creator()->associate(Auth::user());
+        $task->save();
+
+        $answer = new Answer([
+            'body' => $request->answer,
+        ]);
+
+        $answer->task()->associate($task);
+        $answer->save();
+
         return back()->with('status', 'Task created');
+
+        // www version
+        /*$this->authorize('create', Task::class);
+        $request->persist();
+        return back()->with('status', 'Task created');*/
     }
 
     /**
@@ -55,7 +74,8 @@ class TaskController extends Controller
     {
         $task = Task::find($id);
         $this->authorize('view', $task);
-        return view('tasks.task', compact('task'));
+        $answers = $task->answers;
+        return view('tasks.task', compact('task', 'answers'));
     }
 
     /**
@@ -81,6 +101,14 @@ class TaskController extends Controller
     public function update(StoreCourse $request, $id)
     {
         $task = Task::findOrFail($id);
+        
+        $answer = new Answer([
+            'body' => $request->answer,
+        ]);
+
+        $answer->task()->associate($task);
+        $answer->save();
+
         $this->authorize('update', $task);
         $request->savechanges($id);
         return redirect('/tasks');

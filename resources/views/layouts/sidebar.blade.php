@@ -11,6 +11,8 @@
             @if(Auth::check())
                 <li><a href="{{ url('/admin/users/'.Auth::user()->id.'/enrolls') }}">My courses</a></li>
             @endif
+            <li><a href="{{url('/tiko/reports/r1')}}">R1 reports</a></li>
+            <li><a href="{{url('/tiko/reports/r2')}}">R2 reports</a></li>
         </ul>
     </div>
 

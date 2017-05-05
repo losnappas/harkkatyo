@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCourse;
 use App\Course;
 use App\Task;
 use Auth;
+use App\Session;
 
 // use Illuminate\Http\Request;
 
@@ -65,9 +66,9 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         $this->authorize('view', $course);
-        $enrolled = $this->checkEnroll($id);
+        // $enrolled = $this->checkEnroll($id);
 
-        return view('courses.course', compact('course', 'enrolled'));
+        return view('courses.course', compact('course'/*, 'enrolled'*/));
     }
 
     /**
@@ -112,7 +113,7 @@ class CourseController extends Controller
         $course->delete();
         return redirect('/courses')->with('status', 'Course deleted');
     }
-
+/*
 
     //enroll on a course
     public function enroll($id)
@@ -131,17 +132,25 @@ class CourseController extends Controller
             $status = 'Course enrollment success';
         return redirect('/courses/'.$id)->with('status', $status);
     }
-
+*/
     //start the course
     public function start($id)
     {
         $course = Course::findOrFail($id);
-        return view('courses.do', compact('course'));
+        
+        $session = new Session();
+
+        $session->user()->associate(Auth::user());
+        $session->course()->associate($course);
+
+        $session->save();
+
+        return view('courses.do', compact('course', 'session'));
     }
 
     //where should this be placed in?
     //check if currently logged user has enrolled on $id course
-    function checkEnroll($id)
+/*    function checkEnroll($id)
     {
         foreach (Auth::user()->courses as $course) {
             if ($course != null && $course->id == $id) {
@@ -149,5 +158,5 @@ class CourseController extends Controller
             }
         }
         return false;
-    }
+    }*/
 }

@@ -15,6 +15,8 @@ require('./bootstrap');
 
 window.bus = new Vue();
 
+axios.defaults.baseURL = '';//'https://www3.sis.uta.fi/~ok415563/laravel';//works?
+
 
 Vue.component('task-list', require('./components/TaskList.vue'));
 Vue.component('custom-editor', require('./components/CustomEditor.vue'));

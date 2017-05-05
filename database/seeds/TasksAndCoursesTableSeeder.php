@@ -13,6 +13,9 @@ class TasksAndCoursesTableSeeder extends Seeder
     {
         factory('App\Task', 4)->create();
         factory('App\Course', 3)->create();
+        factory('App\Answer', 1)->create();
+
+
 
         //attach task1 to course 1
         //usually do this via controller.

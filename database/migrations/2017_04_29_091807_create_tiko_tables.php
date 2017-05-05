@@ -25,12 +25,11 @@ class CreateTikoTables extends Migration
         //'start', 'end', 'completed'
         Schema::create('sessions', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('start');
-            $table->timestamp('end');
-            $table->unsignedInteger('completed');
-            $table->unsignedInteger('course_id');
-            $table->unsignedInteger('user_id');
-            $table->timestamps();
+            $table->timestamp('end')->nullable();
+            $table->unsignedInteger('completed')->default(0);
+            $table->unsignedInteger('course_id')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->timestamps(); //start is here
 
             $table->foreign('course_id')->references('id')->on('courses')
                 ->onUpdate('cascade')->onDelete('cascade');
@@ -39,16 +38,18 @@ class CreateTikoTables extends Migration
         });
 
         //'start', 'end', 'correct', 'count', 'body'
+        //there's a lot of nullable fields so we can save
+        //when the attempt starts and edit after it ends.
         Schema::create('attempts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('body'); //given answer/attempt
-            $table->timestamp('start');
-            $table->timestamp('end');
-            $table->boolean('correct');
-            $table->unsignedInteger('count');
+            $table->string('body')->nullable(); //given answer/attempt
+            //$table->timestamp('start');
+            $table->timestamp('end')->nullable();
+            $table->boolean('correct')->nullable();
+            $table->unsignedInteger('count')->nullable();
             $table->unsignedInteger('session_id');
             $table->unsignedInteger('task_id');
-            $table->timestamps();
+            $table->timestamps();//start
 
             $table->foreign('session_id')->references('id')->on('sessions')
                 ->onUpdate('cascade')->onDelete('cascade');
@@ -64,8 +65,8 @@ class CreateTikoTables extends Migration
      */
     public function down()
     {
-        Schema::drop('answers');
-        Schema::drop('sessions');
+        Schema::dropIfExists('answers');
         Schema::drop('attempts');
+        Schema::drop('sessions');
     }
 }

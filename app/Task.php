@@ -12,7 +12,7 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'body', 'title'/*==type*/, 'creation_date', 'creator'
+        'body', 'title'/*==type*/, 'creation_date', /*'creator'*/
     ];
 
     //M:N

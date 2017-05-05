@@ -10,6 +10,9 @@
 
     {!! strip_tags($task->body, '<h1><b><strike><p>') !!}
     <br /><br />
-    Answer: {{$task->answer}}
+    Answers:
+    @foreach($answers as $answer)
+    	<br /> {{$answer->body}} 
+    @endforeach
                 
 @endsection

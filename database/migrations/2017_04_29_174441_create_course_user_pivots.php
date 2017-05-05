@@ -12,9 +12,9 @@ class CreateCourseUserPivots extends Migration
      */
     public function up()
     {
-        Schema::create('course_user', function (Blueprint $table)
+        Schema::create(/*'course*/'session_user', function (Blueprint $table)
         {
-            $table->unsignedInteger('course_id');
+            $table->unsignedInteger(/*'course*/'session_id');
             $table->unsignedInteger('user_id');
 
 
@@ -22,12 +22,12 @@ class CreateCourseUserPivots extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
 
 
-            $table->foreign('course_id')->references('id')->on('courses')
+            $table->foreign(/*'course*/'session_id')->references('id')->on(/*'course*/'sessions')
                 ->onUpdate('cascade')->onDelete('cascade');
             
             //no foreign key constraints (vs entrust_setup_tables)? interesting
             //changed to fk:s for cascade effects
-            $table->primary(['course_id', 'user_id']);
+            $table->primary([/*'course*/'session_id', 'user_id']);
         });
     }
 
@@ -38,6 +38,6 @@ class CreateCourseUserPivots extends Migration
      */
     public function down()
     {
-        Schema::drop('course_user');
+        Schema::drop(/*'course*/'session_user');
     }
 }

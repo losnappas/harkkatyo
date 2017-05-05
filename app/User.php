@@ -34,10 +34,10 @@ class User extends Authenticatable
     }
 
     //multiple students can take part on multiple courses
-    public function courses()
+/*    public function courses()
     {
         return $this->belongsToMany(Course::class);
-    }
+    }*/
 
     public function teacher()
     {

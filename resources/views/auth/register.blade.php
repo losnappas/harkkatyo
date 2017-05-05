@@ -59,6 +59,21 @@
         </div>
     </div>
 
+
+    <div class="form-group">
+        <label for="student_num" class="col-md-4 control-label">Student number</label>
+        <div class="col-md-6">
+            <input id="student_num" name="student_num" class="form-control" type="text">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="subject" class="col-md-4 control-label">Main Subject</label>
+        <div class="col-md-6">
+            <input id="subject" name="subject" class="form-control" type="text">
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-md-6 col-md-offset-4">
             <button type="submit" class="btn btn-primary">

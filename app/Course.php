@@ -12,7 +12,7 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
-        'body', 'title', 'creation_date', 'task_count', 'creator'
+        'body', 'title', 'creation_date', 'task_count', /*'creator'*/
     ];
 
     public function tasks()
@@ -30,11 +30,11 @@ class Course extends Model
     	return $this->tasks()->create(['body' => $body, 'title'=>$title, 'deadline' => $deadline]);
     }*/
 
-
+/*
     public function users()
     {
         return $this->belongsToMany(User::class);
-    }
+    }*/
 
     public function teacher()
     {
