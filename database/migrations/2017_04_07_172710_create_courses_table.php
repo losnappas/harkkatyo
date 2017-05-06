@@ -17,7 +17,7 @@ class CreateCoursesTable extends Migration
             $table->string('body');
             $table->string('title');
             $table->unsignedInteger('teacher_id'); //creator
-            $table->unsignedInteger('task_count'); //added TIKO
+            // $table->unsignedInteger('task_count'); //added TIKO
             $table->timestamps(); //created_at included here
 
             $table->foreign('teacher_id')->references('id')->on('users');
@@ -36,8 +36,8 @@ class CreateCoursesTable extends Migration
 
         Schema::create('course_task', function (Blueprint $table)
         {
-            //how manieth question
-            $table->unsignedInteger('count');
+/*            //how manieth question
+            $table->unsignedInteger('count');*/
 
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('task_id');

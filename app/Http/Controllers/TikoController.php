@@ -16,18 +16,6 @@ use Auth;
 
 class TikoController extends Controller
 {
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        
-        return view('tiko.home');
-    }
-
     public function getAnswers($taskid)
     {
         $task = Task::findOrFail($taskid);

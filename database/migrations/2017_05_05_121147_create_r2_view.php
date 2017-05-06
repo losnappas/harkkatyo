@@ -14,9 +14,9 @@ class CreateR2View extends Migration
     {
         DB::statement("CREATE VIEW R2View AS
          SELECT course_id, 
-         MIN(end-created_at) as fastest, 
-         MAX(end-created_at) as slowest, 
-         AVG(end-created_at) as average 
+         MIN(sessions.end-created_at) as fastest, 
+         MAX(sessions.end-created_at) as slowest, 
+         AVG(sessions.end-created_at) as average 
          FROM sessions 
          GROUP BY course_id");
     }
