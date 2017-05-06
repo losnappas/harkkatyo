@@ -8,9 +8,10 @@
             <li><a href="{{url('/admin/users')}}">Manage users</a></li>
 	        <li><a href="{{url('/courses')}}">Courses</a></li>
 	        <li><a href="{{url('/tasks')}}">Tasks</a></li>
-            @if(Auth::check())
+            <!-- feature removed.. too lazy
+             @if(Auth::check())
                 <li><a href="{{ url('/admin/users/'.Auth::user()->id.'/enrolls') }}">My courses</a></li>
-            @endif
+            @endif -->
             <li><a href="{{url('/tiko/reports/r1')}}">R1 reports</a></li>
             <li><a href="{{url('/tiko/reports/r2')}}">R2 reports</a></li>
         </ul>

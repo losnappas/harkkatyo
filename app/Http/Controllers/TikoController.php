@@ -11,6 +11,7 @@ use App\Course;
 use App\Task;
 use App\Attempt;
 use DB;
+use Auth;
 
 
 class TikoController extends Controller
@@ -85,6 +86,9 @@ class TikoController extends Controller
         try{
         $session = Session::findOrFail($request->session);
         $session->end = \Carbon\Carbon::now();
+
+        $session->completed = Attempt::where('session_id', $session->id)->max('count');
+        
         $session->save();
         }
         catch(\Exception $e){
@@ -95,8 +99,17 @@ class TikoController extends Controller
 
     public function r1()
     {
-        $sessions = Session::all();
-        return view('reports.R1', compact('sessions'));
+        if (Auth::check()) {
+            if (Auth::user()->hasRole(['owner', 'teacher'])) {
+                $sessions = Session::all();
+            }else {
+                $sessions = Session::where('user_id', Auth::user()->id)->get();
+            }
+            return view('reports.R1', compact('sessions'));
+        }
+        else{
+            return redirect('/courses');
+        }
     }
 
     public function r2()
@@ -108,98 +121,15 @@ class TikoController extends Controller
         return view('reports.R2', compact('r2'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function display()
     {
-        //
+        $opiskelijat = DB::table('opiskelijat')->get();
+        $kurssit = DB::table('kurssit')->get();
+        $suoritukset = DB::table('suoritukset')->get();
+
+        return response(['opiskelijat'=>$opiskelijat,
+                    'kurssit'=>$kurssit,
+                    'suoritukset'=>$suoritukset
+                ], 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $session = Session::findOrFail($id);
-
-        //$session->course_id or $session->course()?
-        //each session only has one course
-        // $course = Course::findOrFail($session->course_id);
-        $course = $session->courses;
-
-        return view('courses.do', compact('course'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        $roles = Role::all();
-        return view('admins.users.edit', compact('user', 'roles'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(StoreCourse $request, $id)
-    {
-        $user = User::findOrFail($id);
-        $this->authorize('update', $user);
-
-        if ($request->has('roles')) {
-            $this->authorize('changeRole', $user);
-        }
-        if ($request->has('roles')) {
-
-        foreach ($request->roles as $role) {
-            if ($role!=null && $role == 1) {
-                return back()->with('status', 'Owner profile cannot be modified');
-            }
-        }
-        }
-        $request->savechanges($id);
-        return redirect('/admin/users')->with('status', 'User updated');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $user = User::findOrFail($id);
-        $this->authorize('destroy', $user);
-        User::destroy($user);
-        return redirect('/admin/users')->with('status', 'User removed');
-    }
-
 }

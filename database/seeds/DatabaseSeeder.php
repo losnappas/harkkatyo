@@ -14,6 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesAndPermissionsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(TasksAndCoursesTableSeeder::class);
-        $this->call(TikoTablesSeeder::class);
+        //$this->call(TikoTablesSeeder::class);
     }
 }

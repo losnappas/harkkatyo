@@ -13,21 +13,22 @@
             <button v-on:click="checkAnswer2(answer)">Submit</button>
 
             </div>
-            <div v-else>{{this.done()}}All done. It's time to <a :href="href">head back</a></div>
+            <div v-else>All done. It's time to <a :href="href">head back</a></div>
         </div>
         <div :class="className" v-if="message.length > 1">
         {{message}}
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         </div>
 
-        <div class="alert alert-warning" v-if="reply.length > 1">
+        <div class="alert alert-warning">
         <strong><u>Your answer resulted: </u></strong><br/>
-        {{reply}}
+        <div v-if="reply.length>0">{{reply}}</div>
+        <div id="reply"></div>
         </div>
 
-        <div class="alert alert-info" v-if="realAnswer.length > 1">
-        <strong><u>Correct result is: </u></strong><br/>
-        {{realAnswer}}
+        <div class="alert alert-info">
+        <strong><u>Desired result is: </u></strong><br/>
+        <div id="realAnswer"></div>
         </div>
        
 
@@ -35,7 +36,9 @@
 
         <div v-if="tasks.lenght == 0 && loading == false">There were no tasks...</div>
 
-
+        opiskelijat: <br/> <div id="opiskelijat"></div> <br/>
+        kurssit: <br/> <div id="kurssit"></div> <br/>
+        suoritukset: <br/> <div id="suoritukset"></div>
     </div>
 </template>
 <script>
@@ -110,28 +113,28 @@
                 //check the answer
                 let dbAnswer = 'not working?';
                 let wasCorrect = false;
+                this.reply='';
                 axios.get('/tiko/answer/'+this.tasks[this.current].id)
                     .then(response => {
                         dbAnswer = response.data.dbAnswer[0].body;
-                        console.log('fetched correct dbanswer var: ', dbAnswer);
 
+                    //post both answers
                     axios.all([
                         axios.post('/tiko/answered', {body: dbAnswer}),
                         axios.post('/tiko/answered', {body: answer})
                     ])
                     .then(axios.spread((dbResponse, userResponse) => {
 
-                        if (JSON.stringify(userResponse.data.dbAnswer) == 
+                        if (JSON.stringify(userResponse.data.dbAnswer) === 
                                 JSON.stringify(dbResponse.data.dbAnswer)) {
-                            console.log('nice');
-                            //copy paste (almost) checkAnswer things.
+
                             this.tries=0;
                             wasCorrect = true;
                             this.current++;
                             this.message = 'Correct!';
                             this.count++;
+                            this.answer='';
                         }else{
-                            console.log('not nice');
                             wasCorrect = false;
                             if (this.tries===2) {
                                 this.message = 'The correct answer was: '+dbAnswer;
@@ -142,6 +145,8 @@
                                 this.message = 'Try again.';
                             }
                         }
+                        this.$refs.answer.focus();
+
 
                         //register the attempt
                         axios.post('/tiko/attempt', 
@@ -150,15 +155,19 @@
                                 attempt: this.attempt,
                             })
                             .then(response => {
-                                console.log('attempt', response.data.dbAnswer);
                                 this.start();
+
                             })
                             .catch(error => console.error('attempt: ',error));
-                        
+                        if (this.current >= this.tasks.length) {
+                            this.done();
+                        }
+                        if (userResponse.data.dbAnswer.indexOf("STATE")===-1)
+                            this.print(userResponse.data.dbAnswer, 'reply');
+                        else
+                            this.reply = userResponse.data.dbAnswer;
 
-
-                        this.reply = userResponse.data.dbAnswer;
-                        this.realAnswer = dbResponse.data.dbAnswer;
+                        this.print(dbResponse.data.dbAnswer, 'realAnswer');
                     }))
                     .catch(error => {
                         console.error('in inner error: ',error)
@@ -184,33 +193,22 @@
                 })
                 .catch(error => console.error('attempt create err: ', error,
                         this.sessionid, this.tasks[this.current].id));
+
+                //print the tables for display . . .
+                axios.get('/tiko/display')
+                    .then(response => {
+                        this.print(response.data.opiskelijat, 'opiskelijat');
+                        this.print(response.data.kurssit, 'kurssit');
+                        this.print(response.data.suoritukset, 'suoritukset');
+                    })
+                    .catch(error => console.error('disp.', error));
             },
 
 
 
             done: function(){
                 axios.post('/tiko/session/done', {session: this.sessionid})
-                .then(response => console.log(response.data))
                 .catch(error => console.error('done error: ', error));
-            },
-
-
-
-            checkAnswer: function (answer){
-                if(this.tasks[this.current].answer == answer){
-                    this.message = 'Correct!';
-                    this.current++;
-                    this.tries = 0;
-                } else if (this.tries==2) {
-                    this.message = 'The correct answer was: '+this.tasks[this.current].answers;
-                    this.current++;
-                    this.tries = -1;
-                } else {
-                    this.message = 'Wrong answer, try again.';
-                    this.tries++;
-                }
-                this.answer='';
-                this.$refs.answer.focus();
             },
 
             strip: function(){
@@ -226,10 +224,51 @@
             clear: function (){
                 if (this.message.length>0)
                     this.message='';
+            },
+
+            print: function(givenTable, idName){
+                // EXTRACT VALUE FOR HTML HEADER. 
+        // ('Book ID', 'Book Name', 'Category' and 'Price')
+        var col = [];
+        for (var i = 0; i < givenTable.length; i++) {
+            for (var key in givenTable[i]) {
+                if (col.indexOf(key) === -1) {
+                    col.push(key);
+                }
+            }
+        }
+
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+
+        // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+        var tr = table.insertRow(-1);                   // TABLE ROW.
+
+        for (var i = 0; i < col.length; i++) {
+            var th = document.createElement("th");      // TABLE HEADER.
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < givenTable.length; i++) {
+
+            tr = table.insertRow(-1);
+
+            for (var j = 0; j < col.length; j++) {
+                var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = givenTable[i][col[j]];
+            }
+        }
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById(idName);
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
             }
 
-
         }
+
     }
 </script>
 <style>
@@ -241,5 +280,15 @@
         font-size: 22px;
         line-height: 20px;
         cursor: pointer;
+    }
+
+    table, th, td{
+        border: 1px solid black;
+    }
+    table{
+        width: 100%;
+    }
+    th{
+        height: 50px;
     }
 </style>

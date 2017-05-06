@@ -2228,6 +2228,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -2295,22 +2298,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //check the answer
             var dbAnswer = 'not working?';
             var wasCorrect = false;
+            this.reply = '';
             axios.get('/tiko/answer/' + this.tasks[this.current].id).then(function (response) {
                 dbAnswer = response.data.dbAnswer[0].body;
-                console.log('fetched correct dbanswer var: ', dbAnswer);
 
+                //post both answers
                 axios.all([axios.post('/tiko/answered', { body: dbAnswer }), axios.post('/tiko/answered', { body: answer })]).then(axios.spread(function (dbResponse, userResponse) {
 
-                    if (JSON.stringify(userResponse.data.dbAnswer) == JSON.stringify(dbResponse.data.dbAnswer)) {
-                        console.log('nice');
-                        //copy paste (almost) checkAnswer things.
+                    if (JSON.stringify(userResponse.data.dbAnswer) === JSON.stringify(dbResponse.data.dbAnswer)) {
+
                         _this2.tries = 0;
                         wasCorrect = true;
                         _this2.current++;
                         _this2.message = 'Correct!';
                         _this2.count++;
+                        _this2.answer = '';
                     } else {
-                        console.log('not nice');
                         wasCorrect = false;
                         if (_this2.tries === 2) {
                             _this2.message = 'The correct answer was: ' + dbAnswer;
@@ -2321,20 +2324,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             _this2.message = 'Try again.';
                         }
                     }
+                    _this2.$refs.answer.focus();
 
                     //register the attempt
                     axios.post('/tiko/attempt', {
                         body: answer, correct: wasCorrect, count: _this2.count,
                         attempt: _this2.attempt
                     }).then(function (response) {
-                        console.log('attempt', response.data.dbAnswer);
                         _this2.start();
                     }).catch(function (error) {
                         return console.error('attempt: ', error);
                     });
+                    if (_this2.current >= _this2.tasks.length) {
+                        _this2.done();
+                    }
+                    if (userResponse.data.dbAnswer.indexOf("STATE") === -1) _this2.print(userResponse.data.dbAnswer, 'reply');else _this2.reply = userResponse.data.dbAnswer;
 
-                    _this2.reply = userResponse.data.dbAnswer;
-                    _this2.realAnswer = dbResponse.data.dbAnswer;
+                    _this2.print(dbResponse.data.dbAnswer, 'realAnswer');
                 })).catch(function (error) {
                     console.error('in inner error: ', error);
                 });
@@ -2356,31 +2362,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 return console.error('attempt create err: ', error, _this3.sessionid, _this3.tasks[_this3.current].id);
             });
-        },
 
-        done: function done() {
-            axios.post('/tiko/session/done', { session: this.sessionid }).then(function (response) {
-                return console.log(response.data);
+            //print the tables for display . . .
+            axios.get('/tiko/display').then(function (response) {
+                _this3.print(response.data.opiskelijat, 'opiskelijat');
+                _this3.print(response.data.kurssit, 'kurssit');
+                _this3.print(response.data.suoritukset, 'suoritukset');
             }).catch(function (error) {
-                return console.error('done error: ', error);
+                return console.error('disp.', error);
             });
         },
 
-        checkAnswer: function checkAnswer(answer) {
-            if (this.tasks[this.current].answer == answer) {
-                this.message = 'Correct!';
-                this.current++;
-                this.tries = 0;
-            } else if (this.tries == 2) {
-                this.message = 'The correct answer was: ' + this.tasks[this.current].answers;
-                this.current++;
-                this.tries = -1;
-            } else {
-                this.message = 'Wrong answer, try again.';
-                this.tries++;
-            }
-            this.answer = '';
-            this.$refs.answer.focus();
+        done: function done() {
+            axios.post('/tiko/session/done', { session: this.sessionid }).catch(function (error) {
+                return console.error('done error: ', error);
+            });
         },
 
         strip: function strip() {
@@ -2394,9 +2390,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         clear: function clear() {
             if (this.message.length > 0) this.message = '';
+        },
+
+        print: function print(givenTable, idName) {
+            // EXTRACT VALUE FOR HTML HEADER. 
+            // ('Book ID', 'Book Name', 'Category' and 'Price')
+            var col = [];
+            for (var i = 0; i < givenTable.length; i++) {
+                for (var key in givenTable[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            // CREATE DYNAMIC TABLE.
+            var table = document.createElement("table");
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1); // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
+            // ADD JSON DATA TO THE TABLE AS ROWS.
+            for (var i = 0; i < givenTable.length; i++) {
+
+                tr = table.insertRow(-1);
+
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = givenTable[i][col[j]];
+                }
+            }
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById(idName);
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
         }
 
     }
+
 });
 
 /***/ }),
@@ -4808,7 +4846,7 @@ exports.push([module.i, "\n.editordiv{\n\tborder-left-style: solid;\n\tpadding: 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(8)();
-exports.push([module.i, "\n.closebtn{\n    margin-left: 15px;\n    color: black;\n    font-weight: bold;\n    float: right;\n    font-size: 22px;\n    line-height: 20px;\n    cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.closebtn{\n    margin-left: 15px;\n    color: black;\n    font-weight: bold;\n    float: right;\n    font-size: 22px;\n    line-height: 20px;\n    cursor: pointer;\n}\ntable, th, td{\n    border: 1px solid black;\n}\ntable{\n    width: 100%;\n}\nth{\n    height: 50px;\n}\n", ""]);
 
 /***/ }),
 /* 37 */
@@ -23105,7 +23143,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.checkAnswer2(_vm.answer)
       }
     }
-  }, [_vm._v("Submit")])]) : _c('div', [_vm._v(_vm._s(this.done()) + "All done. It's time to "), _c('a', {
+  }, [_vm._v("Submit")])]) : _c('div', [_vm._v("All done. It's time to "), _c('a', {
     attrs: {
       "href": _vm.href
     }
@@ -23116,15 +23154,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "onclick": "this.parentElement.style.display='none';"
     }
-  }, [_vm._v("×")])]) : _vm._e(), _vm._v(" "), (_vm.reply.length > 1) ? _c('div', {
+  }, [_vm._v("×")])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "alert alert-warning"
-  }, [_vm._m(0), _c('br'), _vm._v("\n    " + _vm._s(_vm.reply) + "\n    ")]) : _vm._e(), _vm._v(" "), (_vm.realAnswer.length > 1) ? _c('div', {
-    staticClass: "alert alert-info"
-  }, [_vm._m(1), _c('br'), _vm._v("\n    " + _vm._s(_vm.realAnswer) + "\n    ")]) : _vm._e(), _vm._v(" "), (_vm.loading == true) ? _c('div', [_vm._v("Please wait while loading data...")]) : _vm._e(), _vm._v(" "), (_vm.tasks.lenght == 0 && _vm.loading == false) ? _c('div', [_vm._v("There were no tasks...")]) : _vm._e()])
+  }, [_vm._m(0), _c('br'), _vm._v(" "), (_vm.reply.length > 0) ? _c('div', [_vm._v(_vm._s(_vm.reply))]) : _vm._e(), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "reply"
+    }
+  })]), _vm._v(" "), _vm._m(1), _vm._v(" "), (_vm.loading == true) ? _c('div', [_vm._v("Please wait while loading data...")]) : _vm._e(), _vm._v(" "), (_vm.tasks.lenght == 0 && _vm.loading == false) ? _c('div', [_vm._v("There were no tasks...")]) : _vm._e(), _vm._v("\n\n    opiskelijat: "), _c('br'), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "opiskelijat"
+    }
+  }), _vm._v(" "), _c('br'), _vm._v("\n    kurssit: "), _c('br'), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "kurssit"
+    }
+  }), _vm._v(" "), _c('br'), _vm._v("\n    suoritukset: "), _c('br'), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "suoritukset"
+    }
+  })])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('strong', [_c('u', [_vm._v("Your answer resulted: ")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('strong', [_c('u', [_vm._v("Correct result is: ")])])
+  return _c('div', {
+    staticClass: "alert alert-info"
+  }, [_c('strong', [_c('u', [_vm._v("Desired result is: ")])]), _c('br'), _vm._v(" "), _c('div', {
+    attrs: {
+      "id": "realAnswer"
+    }
+  })])
 }]}
 module.exports.render._withStripped = true
 if (false) {

@@ -52,5 +52,5 @@ Route::group(['prefix' => 'tiko'], function(){
 
 	Route::get('/reports/r1', 'TikoController@r1');
 	Route::get('/reports/r2', 'TikoController@r2');
-
+	Route::get('/display', 'TikoController@display');
 });
