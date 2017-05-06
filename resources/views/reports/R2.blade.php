@@ -17,7 +17,7 @@
 				<td>
 					{{$row->title}}
 				</td>
-				<td>
+				<td><!-- remove gmdate() in case of old php -->
 					{{gmdate("H:i:s",$row->average)}}
 				</td>
 				<td>

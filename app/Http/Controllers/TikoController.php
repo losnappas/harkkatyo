@@ -102,8 +102,8 @@ class TikoController extends Controller
 
     public function r2()
     {
-        $r2 = DB::table('R2View')
-                ->join('courses', 'courses.id', '=', 'R2View.course_id')
+        $r2 = DB::table('r2view')
+                ->join('courses', 'courses.id', '=', 'r2view.course_id')
                 ->get();
 
         return view('reports.R2', compact('r2'));
