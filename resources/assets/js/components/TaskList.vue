@@ -7,7 +7,7 @@
             <h4>
                 Task: {{tasks[current].title}}
             </h4><br/>
-            <p v-html="strip()"></p>
+            <p v-html="strip(this.tasks[this.current].body)"></p>
             <input v-model="answer" placeholder="answer" value="answer" ref="answer" @keyup.enter="checkAnswer2(answer)"
               @keydown="clear" />
             <button v-on:click="checkAnswer2(answer)">Submit</button>
@@ -211,12 +211,13 @@
                 .catch(error => console.error('done error: ', error));
             },
 
-            strip: function(){
+            strip: function(str){
+			if(!isNaN(str)) return str;
                   var allowed = '<h1><b><strike><p>';
                   allowed = (((allowed || '') + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('')
                   var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi
                   var commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi
-                  return this.tasks[this.current].body.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+                  return str.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
                     return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : ''
                   })
               
@@ -228,44 +229,44 @@
 
             print: function(givenTable, idName){
                 // EXTRACT VALUE FOR HTML HEADER. 
-        // ('Book ID', 'Book Name', 'Category' and 'Price')
-        var col = [];
-        for (var i = 0; i < givenTable.length; i++) {
-            for (var key in givenTable[i]) {
-                if (col.indexOf(key) === -1) {
-                    col.push(key);
-                }
-            }
-        }
+		// ('Book ID', 'Book Name', 'Category' and 'Price')
+		var col = [];
+		for (var i = 0; i < givenTable.length; i++) {
+		    for (var key in givenTable[i]) {
+			if (col.indexOf(key) === -1) {
+			    col.push(this.strip(key));
+			}
+		    }
+		}
 
-        // CREATE DYNAMIC TABLE.
-        var table = document.createElement("table");
+		// CREATE DYNAMIC TABLE.
+		var table = document.createElement("table");
 
-        // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+		// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
-        var tr = table.insertRow(-1);                   // TABLE ROW.
+		var tr = table.insertRow(-1);                   // TABLE ROW.
 
-        for (var i = 0; i < col.length; i++) {
-            var th = document.createElement("th");      // TABLE HEADER.
-            th.innerHTML = col[i];
-            tr.appendChild(th);
-        }
+		for (var i = 0; i < col.length; i++) {
+		    var th = document.createElement("th");      // TABLE HEADER.
+		    th.innerHTML = col[i];
+		    tr.appendChild(th);
+		}
 
-        // ADD JSON DATA TO THE TABLE AS ROWS.
-        for (var i = 0; i < givenTable.length; i++) {
+		// ADD JSON DATA TO THE TABLE AS ROWS.
+		for (var i = 0; i < givenTable.length; i++) {
 
-            tr = table.insertRow(-1);
+		    tr = table.insertRow(-1);
 
-            for (var j = 0; j < col.length; j++) {
-                var tabCell = tr.insertCell(-1);
-                tabCell.innerHTML = givenTable[i][col[j]];
-            }
-        }
-        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-        var divContainer = document.getElementById(idName);
-        divContainer.innerHTML = "";
-        divContainer.appendChild(table);
-            }
+		    for (var j = 0; j < col.length; j++) {
+			var tabCell = tr.insertCell(-1);
+			tabCell.innerHTML = this.strip(givenTable[i][col[j]]);
+		    }
+		}
+		// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+		var divContainer = document.getElementById(idName);
+		divContainer.innerHTML = "";
+		divContainer.appendChild(table);
+	    }
 
         }
 

@@ -2379,12 +2379,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
 
-        strip: function strip() {
+        strip: function strip(str) {
+            if (!isNaN(str)) return str;
             var allowed = '<h1><b><strike><p>';
             allowed = (((allowed || '') + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
             var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
             var commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-            return this.tasks[this.current].body.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+            return str.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
                 return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
             });
         },
@@ -2399,7 +2400,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             for (var i = 0; i < givenTable.length; i++) {
                 for (var key in givenTable[i]) {
                     if (col.indexOf(key) === -1) {
-                        col.push(key);
+                        col.push(this.strip(key));
                     }
                 }
             }
@@ -2424,7 +2425,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 for (var j = 0; j < col.length; j++) {
                     var tabCell = tr.insertCell(-1);
-                    tabCell.innerHTML = givenTable[i][col[j]];
+                    tabCell.innerHTML = this.strip(givenTable[i][col[j]]);
                 }
             }
             // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
@@ -23109,7 +23110,7 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [(_vm.loading == false) ? _c('div', [(_vm.current < _vm.tasks.length) ? _c('div', [_c('h4', [_vm._v("\n            Task: " + _vm._s(_vm.tasks[_vm.current].title) + "\n        ")]), _c('br'), _vm._v(" "), _c('p', {
     domProps: {
-      "innerHTML": _vm._s(_vm.strip())
+      "innerHTML": _vm._s(_vm.strip(this.tasks[this.current].body))
     }
   }), _vm._v(" "), _c('input', {
     directives: [{
